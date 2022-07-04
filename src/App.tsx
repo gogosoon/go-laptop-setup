@@ -1,35 +1,80 @@
+import softwares from "./softwares.json";
+import { Checkbox, Divider, FormControlLabel } from "@mui/material";
 import React from "react";
 import "./App.css";
-// var cmd = require("node-cmd");
-// import cmd from "node-cmd";
-// import { ipcRenderer } from "electron";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 const { ipcRenderer } = window.require("electron");
 
 function App() {
-  function installGit() {
-    console.log("Install Git Here");
-    // cmd.runSync("sudo apt-get install git");
-    ipcRenderer.send("install", { install: ["git"] });
-  }
+  // function installGit() {
+  //   console.log("Install Git Here");
+  //   // cmd.runSync("sudo apt-get install git");
+  //   ipcRenderer.send("install", { install: ["git"] });
+  // }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload. Hello
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <button onClick={installGit}>Install Git</button>
-      </header>
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          >
+            GoGoSoon Laptop Setup
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      {softwares?.software_groups?.map((software_group) => (
+        <div style={{ padding: 10 }}>
+          <Typography variant="h4">{software_group?.name}</Typography>
+          <Divider style={{ padding: 5 }} />
+          {software_group?.softwares?.map((software) => (
+            <>
+              {!software?.softwares && (
+                <>
+                  <Software software={software} />
+                </>
+              )}
+              {software?.softwares && (
+                <>
+                  <Typography variant="h6">{software?.name}</Typography>
+                  {software?.softwares?.map((sub_software) => (
+                    <>
+                      <Software software={sub_software} />
+                    </>
+                  ))}
+                </>
+              )}
+              <br />
+            </>
+          ))}
+        </div>
+      ))}
+    </Box>
   );
 }
 
 export default App;
+
+interface SoftwareProp {
+  name: string;
+  description: string;
+  script?: string[];
+  softwares?: any;
+  type?: string;
+}
+
+interface SoftwareProps {
+  software: SoftwareProp;
+}
+
+export const Software = (props: SoftwareProps) => {
+  return (
+    <FormControlLabel control={<Checkbox />} label={props?.software?.name} />
+  );
+};
