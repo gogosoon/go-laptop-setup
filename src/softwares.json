@@ -1,0 +1,53 @@
+{
+  "software_groups": [
+    {
+      "name": "Default Development Softwares",
+      "description": "This sections includes necessary softwares for developers",
+      "softwares": [
+        {
+          "name": "NPM",
+          "description": "Node Package Manager",
+          "script": ["sudo apt-get -y install npm"],
+          "type": "direct"
+        },
+        {
+          "name": "Yarn",
+          "description": "Node Package Manager",
+          "script": [
+            "curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -",
+            "echo 'deb https://dl.yarnpkg.com/debian/ stable main' | sudo tee /etc/apt/sources.list.d/yarn.list",
+            "sudo apt update",
+            "sudo apt install -y yarn"
+          ],
+          "type": "direct"
+        },
+        {
+          "name": "Java",
+          "description": "Java JRE and JDK",
+          "softwares": [
+            {
+              "name": "Java 8 JRE",
+              "description": "Java 8 Runtime Environment",
+              "script": ["sudo apt install -y openjdk-8-jre-headless"],
+              "type": "direct",
+              "test_script": "javac -version"
+            },
+            {
+              "name": "Java 8 JDK",
+              "description": "Java 8 Development Kit",
+              "script": ["sudo apt install -y openjdk-8-jdk-headless"],
+              "type": "direct",
+              "test_script": "java -version"
+            }
+          ]
+        },
+        {
+          "name": "Git",
+          "description": "Distributed Version Control System",
+          "script": ["sudo apt install -y git"],
+          "type": "direct"
+        }
+      ]
+    }
+  ]
+}
