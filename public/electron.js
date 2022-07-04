@@ -1,10 +1,20 @@
 const path = require("path");
-
+const cmd = require("node-cmd");
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
+const { ipcMain } = require("electron");
 
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
+
+ipcMain.on("install", (event, data) => {
+  console.log("Event", event);
+  console.log("Data", data);
+  for (let i = 0; i < data?.install?.length; i++) {
+    const response = cmd.runSync(`sudo apt-get install -y ${data?.install[i]}`);
+    console.log("Response", response?.data);
+  }
+});
 
 if (isDev) {
   const devTools = require("electron-devtools-installer");
@@ -23,8 +33,8 @@ function createWindow() {
     width: 800,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
-    }
+      nodeIntegration: true,
+    },
   });
 
   // and load the index.html of the app.
@@ -48,8 +58,8 @@ app.whenReady().then(() => {
 
   if (isDev) {
     installExtension(REACT_DEVELOPER_TOOLS)
-      .then(name => console.log(`Added Extension:  ${name}`))
-      .catch(error => console.log(`An error occurred: , ${error}`));
+      .then((name) => console.log(`Added Extension:  ${name}`))
+      .catch((error) => console.log(`An error occurred: , ${error}`));
   }
 });
 
