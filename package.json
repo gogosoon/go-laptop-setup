@@ -1,8 +1,12 @@
 {
-  "name": "cra-electron-forge-demo",
+  "name": "go_laptop_setup",
+  "productName": "go_laptop_setup",
+  "executableName": "go_laptop_setup",
   "version": "0.1.0",
   "main": "public/electron.js",
   "homepage": "./",
+  "license": "Testing License",
+  "description": "Testing Build",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -67,13 +71,13 @@
     "forge": {
       "packagerConfig": {
         "icon": "src/icons/mac/icon.icns",
-        "name": "React + Electron App"
+        "name": "go_laptop_setup"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "cra_electron_forge_demo"
+            "name": "go_laptop_setup"
           }
         },
         {
