@@ -1,6 +1,6 @@
 import React from "react";
 import softwares from "./softwares.json";
-import { Checkbox, Divider, FormControlLabel } from "@mui/material";
+import { Checkbox, Divider, FormControlLabel, Popover } from "@mui/material";
 import "./App.css";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -21,8 +21,47 @@ interface SoftwareProps {
 }
 
 export const Software = (props: SoftwareProps) => {
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
   return (
-    <FormControlLabel control={<Checkbox />} label={props?.software?.name} />
+    <>
+      <FormControlLabel
+        control={<Checkbox />}
+        label={props?.software?.name}
+        onMouseEnter={handlePopoverOpen}
+        onMouseLeave={handlePopoverClose}
+      />
+      <Popover
+        id="software-description"
+        sx={{
+          pointerEvents: "none",
+        }}
+        open={open}
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+        onClose={handlePopoverClose}
+        disableRestoreFocus
+      >
+        <Typography sx={{ p: 1 }}>{props?.software?.description}</Typography>
+      </Popover>
+    </>
   );
 };
 
