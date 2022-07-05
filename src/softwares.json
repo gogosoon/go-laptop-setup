@@ -5,12 +5,14 @@
       "description": "This sections includes necessary softwares for developers",
       "softwares": [
         {
+          "id": "1-npm",
           "name": "NPM",
           "description": "Node Package Manager",
           "script": ["sudo apt-get -y install npm"],
           "type": "direct"
         },
         {
+          "id": "2-yarn",
           "name": "Yarn",
           "description": "Node Package Manager",
           "script": [
@@ -22,10 +24,12 @@
           "type": "direct"
         },
         {
+          "id": "3-java",
           "name": "Java",
           "description": "Java JRE and JDK",
           "softwares": [
             {
+              "id": "4-jre-8",
               "name": "Java 8 JRE",
               "description": "Java 8 Runtime Environment",
               "script": ["sudo apt install -y openjdk-8-jre-headless"],
@@ -33,6 +37,7 @@
               "test_script": "javac -version"
             },
             {
+              "id": "5-jdk-8",
               "name": "Java 8 JDK",
               "description": "Java 8 Development Kit",
               "script": ["sudo apt install -y openjdk-8-jdk-headless"],
@@ -42,6 +47,7 @@
           ]
         },
         {
+          "id": "6-git",
           "name": "Git",
           "description": "Distributed Version Control System",
           "script": ["sudo apt install -y git"],
