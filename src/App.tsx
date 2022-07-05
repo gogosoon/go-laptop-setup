@@ -65,7 +65,7 @@ interface SoftwareProp {
   name: string;
   description: string;
   script?: string[];
-  softwares?: any;
+  softwares?: SoftwareProp[];
   type?: string;
 }
 
