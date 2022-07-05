@@ -93,6 +93,23 @@ function RenderSoftware(props: RenderSoftwareProps) {
   );
 }
 
+interface SoftwareGroupProps {
+  software_group: SoftwareProp;
+}
+
+function SoftwareGroup(props: SoftwareGroupProps) {
+  const { software_group } = props;
+  return (
+    <div style={{ padding: 10 }}>
+      <Typography variant="h4">{software_group?.name}</Typography>
+      <Divider style={{ padding: 5 }} />
+      {software_group?.softwares?.map((software) => (
+        <RenderSoftware software={software} />
+      ))}
+    </div>
+  );
+}
+
 function App() {
   // function installGit() {
   //   console.log("Install Git Here");
@@ -115,13 +132,7 @@ function App() {
         </Toolbar>
       </AppBar>
       {softwares?.software_groups?.map((software_group) => (
-        <div style={{ padding: 10 }}>
-          <Typography variant="h4">{software_group?.name}</Typography>
-          <Divider style={{ padding: 5 }} />
-          {software_group?.softwares?.map((software) => (
-            <RenderSoftware software={software} />
-          ))}
-        </div>
+        <SoftwareGroup software_group={software_group} />
       ))}
     </Box>
   );
