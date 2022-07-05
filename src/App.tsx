@@ -1,12 +1,58 @@
+import React from "react";
 import softwares from "./softwares.json";
 import { Checkbox, Divider, FormControlLabel } from "@mui/material";
-import React from "react";
 import "./App.css";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 const { ipcRenderer } = window.require("electron");
+
+interface SoftwareProp {
+  name: string;
+  description: string;
+  script?: string[];
+  softwares?: SoftwareProp[];
+  type?: string;
+}
+
+interface SoftwareProps {
+  software: SoftwareProp;
+}
+
+export const Software = (props: SoftwareProps) => {
+  return (
+    <FormControlLabel control={<Checkbox />} label={props?.software?.name} />
+  );
+};
+
+interface RenderSoftwareProps {
+  software: SoftwareProp;
+}
+
+function RenderSoftware(props: RenderSoftwareProps) {
+  const { software } = props;
+  return (
+    <>
+      {!software?.softwares && (
+        <>
+          <Software software={software} />
+        </>
+      )}
+      {software?.softwares && (
+        <>
+          <Typography variant="h6">{software?.name}</Typography>
+          {software?.softwares?.map((sub_software) => (
+            <>
+              <RenderSoftware software={sub_software} />
+            </>
+          ))}
+        </>
+      )}
+      <br />
+    </>
+  );
+}
 
 function App() {
   // function installGit() {
@@ -34,24 +80,7 @@ function App() {
           <Typography variant="h4">{software_group?.name}</Typography>
           <Divider style={{ padding: 5 }} />
           {software_group?.softwares?.map((software) => (
-            <>
-              {!software?.softwares && (
-                <>
-                  <Software software={software} />
-                </>
-              )}
-              {software?.softwares && (
-                <>
-                  <Typography variant="h6">{software?.name}</Typography>
-                  {software?.softwares?.map((sub_software) => (
-                    <>
-                      <Software software={sub_software} />
-                    </>
-                  ))}
-                </>
-              )}
-              <br />
-            </>
+            <RenderSoftware software={software} />
           ))}
         </div>
       ))}
@@ -60,21 +89,3 @@ function App() {
 }
 
 export default App;
-
-interface SoftwareProp {
-  name: string;
-  description: string;
-  script?: string[];
-  softwares?: SoftwareProp[];
-  type?: string;
-}
-
-interface SoftwareProps {
-  software: SoftwareProp;
-}
-
-export const Software = (props: SoftwareProps) => {
-  return (
-    <FormControlLabel control={<Checkbox />} label={props?.software?.name} />
-  );
-};
