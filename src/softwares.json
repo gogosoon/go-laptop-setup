@@ -52,6 +52,45 @@
           "description": "Distributed Version Control System",
           "script": ["sudo apt install -y git"],
           "type": "direct"
+        },
+        {
+          "id": "7-adb",
+          "name": "ADB",
+          "description": "Android Debug Bridge",
+          "script": ["sudo apt install -y adb"],
+          "type": "direct"
+        },
+        {
+          "id": "8-net_tools",
+          "name": "Net Tools",
+          "description": "Includes the important tools for controlling the network subsystem of the Linux kernel",
+          "script": ["sudo apt install -y net-tools"],
+          "type": "direct"
+        },
+        {
+          "id": "9-xclip",
+          "name": "X - Clip",
+          "description": "Copy & Paste using CLI",
+          "script": ["sudo apt install -y xclip"],
+          "type": "direct"
+        },
+        {
+          "id": "10-nvm",
+          "name": "NVM",
+          "description": "Node Version Manager",
+          "script": [
+            "curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.35.3/install.sh -o install_nvm.sh",
+            "bash install_nvm.sh",
+            "source ~/.profile"
+          ],
+          "type": "direct"
+        },
+        {
+          "id": "11-snapd",
+          "name": "Snap",
+          "description": "Snap Package Manager",
+          "script": ["sudo apt install -y snapd"],
+          "type": "direct"
         }
       ]
     }
