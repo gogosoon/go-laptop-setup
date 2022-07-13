@@ -1,6 +1,7 @@
 {
   "software_groups": [
     {
+      "id": "dev-group-1",
       "name": "Default Development Softwares",
       "description": "This sections includes necessary softwares for developers",
       "softwares": [
@@ -55,11 +56,13 @@
           "inputs": [
             {
               "id": "name",
-              "label": "Git config user"
+              "label": "Git config user",
+              "required": true
             },
             {
               "id": "email",
-              "label": "Git config email"
+              "label": "Git config email",
+              "required": true
             }
           ]
         },

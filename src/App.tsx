@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import softwares from "./softwares.json";
 import {
   Checkbox,
@@ -17,9 +17,11 @@ import Typography from "@mui/material/Typography";
 interface Input {
   id: string;
   label: string;
+  required?: boolean;
 }
 
 interface SoftwareProp {
+  id: string;
   name: string;
   description: string;
   script?: string[];
@@ -30,6 +32,12 @@ interface SoftwareProp {
 
 interface SoftwareProps {
   software: SoftwareProp;
+  onChange: (
+    action: "ADD" | "REMOVE",
+    id: string,
+    inputs?: Record<string, string>,
+    metadata?: any
+  ) => void;
 }
 
 export const Software = (props: SoftwareProps) => {
@@ -46,6 +54,15 @@ export const Software = (props: SoftwareProps) => {
   };
 
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    props?.onChange(
+      checked ? "ADD" : "REMOVE",
+      props?.software?.id,
+      inputValues,
+      null
+    );
+  }, [checked, inputValues]);
 
   return (
     <>
@@ -65,6 +82,7 @@ export const Software = (props: SoftwareProps) => {
               label={input?.label}
               variant="outlined"
               value={inputValues[input?.id]}
+              required={input?.required || false}
               style={{ margin: 5 }}
               onChange={(event) => {
                 setInputValues({
@@ -102,6 +120,12 @@ export const Software = (props: SoftwareProps) => {
 
 interface RenderSoftwareProps {
   software: SoftwareProp;
+  onChange: (
+    action: "ADD" | "REMOVE",
+    id: string,
+    inputs?: Record<string, string>,
+    metadata?: any
+  ) => void;
 }
 
 function RenderSoftware(props: RenderSoftwareProps) {
@@ -110,7 +134,7 @@ function RenderSoftware(props: RenderSoftwareProps) {
     <>
       {!software?.softwares && (
         <>
-          <Software software={software} />
+          <Software software={software} onChange={props?.onChange} />
         </>
       )}
       {software?.softwares && (
@@ -118,7 +142,10 @@ function RenderSoftware(props: RenderSoftwareProps) {
           <Typography variant="h6">{software?.name}</Typography>
           {software?.softwares?.map((sub_software) => (
             <>
-              <RenderSoftware software={sub_software} />
+              <RenderSoftware
+                software={sub_software}
+                onChange={props?.onChange}
+              />
             </>
           ))}
         </>
@@ -130,6 +157,12 @@ function RenderSoftware(props: RenderSoftwareProps) {
 
 interface SoftwareGroupProps {
   software_group: SoftwareProp;
+  onChange: (
+    action: "ADD" | "REMOVE",
+    id: string,
+    inputs?: Record<string, string>,
+    metadata?: any
+  ) => void;
 }
 
 function SoftwareGroup(props: SoftwareGroupProps) {
@@ -139,7 +172,7 @@ function SoftwareGroup(props: SoftwareGroupProps) {
       <Typography variant="h4">{software_group?.name}</Typography>
       <Divider style={{ padding: 5 }} />
       {software_group?.softwares?.map((software) => (
-        <RenderSoftware software={software} />
+        <RenderSoftware software={software} onChange={props?.onChange} />
       ))}
     </div>
   );
@@ -151,6 +184,9 @@ function App() {
   //   // cmd.runSync("sudo apt-get install git");
   //   ipcRenderer.send("install", { install: ["git"] });
   // }
+  const [softwaresToInstall, setSoftwaresToInstall] = useState<
+    Record<string, any>
+  >({});
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -167,7 +203,39 @@ function App() {
         </Toolbar>
       </AppBar>
       {softwares?.software_groups?.map((software_group) => (
-        <SoftwareGroup software_group={software_group} />
+        <SoftwareGroup
+          software_group={software_group}
+          onChange={(
+            action: "ADD" | "REMOVE",
+            id: string,
+            inputs?: Record<string, string>,
+            metadata?: any
+          ) => {
+            switch (action) {
+              case "ADD": {
+                let newSoftware = {
+                  inputs,
+                  metadata,
+                };
+                setSoftwaresToInstall({
+                  ...softwaresToInstall,
+                  [id]: newSoftware,
+                });
+                break;
+              }
+              case "REMOVE": {
+                let allSoftwares = softwaresToInstall;
+
+                if (allSoftwares[id]) {
+                  delete allSoftwares[id];
+                }
+
+                setSoftwaresToInstall(allSoftwares);
+                break;
+              }
+            }
+          }}
+        />
       ))}
     </Box>
   );
