@@ -51,7 +51,17 @@
           "name": "Git",
           "description": "Distributed Version Control System",
           "script": ["sudo apt install -y git"],
-          "type": "direct"
+          "type": "direct",
+          "inputs": [
+            {
+              "id": "name",
+              "label": "Git config user"
+            },
+            {
+              "id": "email",
+              "label": "Git config email"
+            }
+          ]
         },
         {
           "id": "7-adb",

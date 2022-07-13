@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import softwares from "./softwares.json";
-import { Checkbox, Divider, FormControlLabel, Popover } from "@mui/material";
+import {
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  Popover,
+  TextField,
+} from "@mui/material";
 import "./App.css";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,12 +14,18 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 // const { ipcRenderer } = window.require("electron");
 
+interface Input {
+  id: string;
+  label: string;
+}
+
 interface SoftwareProp {
   name: string;
   description: string;
   script?: string[];
   softwares?: SoftwareProp[];
   type?: string;
+  inputs?: Input[];
 }
 
 interface SoftwareProps {
@@ -22,6 +34,8 @@ interface SoftwareProps {
 
 export const Software = (props: SoftwareProps) => {
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+  const [checked, setChecked] = useState(false);
+  const [inputValues, setInputValues] = useState<Record<string, string>>({});
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -40,7 +54,28 @@ export const Software = (props: SoftwareProps) => {
         label={props?.software?.name}
         onMouseEnter={handlePopoverOpen}
         onMouseLeave={handlePopoverClose}
+        checked={checked}
+        onChange={() => setChecked(!checked)}
       />
+      {checked && props?.software?.inputs && (
+        <>
+          {props?.software?.inputs?.map((input) => (
+            <TextField
+              id={input?.id}
+              label={input?.label}
+              variant="outlined"
+              value={inputValues[input?.id]}
+              style={{ margin: 5 }}
+              onChange={(event) => {
+                setInputValues({
+                  ...inputValues,
+                  [input?.id]: event.target.value,
+                });
+              }}
+            />
+          ))}
+        </>
+      )}
       <Popover
         id="software-description"
         sx={{
