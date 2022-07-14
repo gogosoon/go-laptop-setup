@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import softwares from "./softwares.json";
 import {
   Button,
@@ -189,6 +189,7 @@ function App() {
   const [softwaresToInstall, setSoftwaresToInstall] = useState<
     Record<string, any>
   >({});
+  const bottomRef = useRef<null | HTMLDivElement>(null);
 
   function installSoftwares() {
     ipcRenderer.on("output", (event: any, arg: any) => {
@@ -197,6 +198,12 @@ function App() {
     });
     ipcRenderer.send("install", { install: softwaresToInstall });
   }
+
+  useEffect(() => {
+    if (showConsoleOutput) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [consoleOutput, showConsoleOutput]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -278,6 +285,7 @@ function App() {
           Listening for events...
         </Typography>
       )}
+      <div ref={bottomRef} />
     </Box>
   );
 }
