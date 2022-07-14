@@ -44,6 +44,7 @@ interface SoftwareProps {
 }
 
 export const Software = (props: SoftwareProps) => {
+  const { onChange, software } = props;
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
   const [checked, setChecked] = useState(false);
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
@@ -59,13 +60,8 @@ export const Software = (props: SoftwareProps) => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
-    props?.onChange(
-      checked ? "ADD" : "REMOVE",
-      props?.software?.id,
-      inputValues,
-      null
-    );
-  }, [checked, inputValues]);
+    onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
+  }, [checked, inputValues, onChange, software]);
 
   return (
     <>
