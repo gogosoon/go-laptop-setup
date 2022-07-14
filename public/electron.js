@@ -1,5 +1,6 @@
 const path = require("path");
 const cmd = require("node-cmd");
+const { spawn } = require("child_process");
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { ipcMain } = require("electron");
@@ -8,12 +9,26 @@ const { ipcMain } = require("electron");
 let installExtension, REACT_DEVELOPER_TOOLS;
 
 ipcMain.on("install", (event, data) => {
-  console.log("Event", event);
-  console.log("Data", data);
-  for (let i = 0; i < data?.install?.length; i++) {
-    const response = cmd.runSync(`sudo apt-get install -y ${data?.install[i]}`);
-    console.log("Response", response?.data);
-  }
+  // console.log("Event", event);
+
+  console.log("Data", JSON.stringify(data));
+  const idsOfSoftwaresToInstall = Object.keys(data?.install);
+  console.log("IDs of Softwares to Install", idsOfSoftwaresToInstall);
+
+  // for (let i = 0; i < data?.install?.length; i++) {
+  //   const response = cmd.runSync(`sudo apt-get install -y ${data?.install[i]}`);
+  //   console.log("Response", response?.data);
+  // }
+
+  const command = spawn("sudo", ["apt-get", "-y", "install", "npm"]);
+
+  // the `data` event is fired every time data is
+  // output from the command
+  command.stdout.on("data", (output) => {
+    // the output data is captured and printed in the callback
+    console.log("Output: ", output.toString());
+    event.reply("output", output.toString());
+  });
 });
 
 if (isDev) {

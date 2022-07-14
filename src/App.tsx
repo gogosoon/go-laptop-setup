@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import softwares from "./softwares.json";
 import {
+  Button,
   Checkbox,
   Divider,
   FormControlLabel,
+  IconButton,
   Popover,
   TextField,
 } from "@mui/material";
@@ -12,7 +14,8 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-// const { ipcRenderer } = window.require("electron");
+import { KeyboardArrowDown, ExpandLess } from "@mui/icons-material";
+const { ipcRenderer } = window.require("electron");
 
 interface Input {
   id: string;
@@ -184,14 +187,20 @@ function SoftwareGroup(props: SoftwareGroupProps) {
 }
 
 function App() {
-  // function installGit() {
-  //   console.log("Install Git Here");
-  //   // cmd.runSync("sudo apt-get install git");
-  //   ipcRenderer.send("install", { install: ["git"] });
-  // }
+  const [consoleOutput, setConsoleOutput] = useState("");
+  const [showConsoleOutput, setShowConsoleOutput] = useState(false);
+  let output = "";
   const [softwaresToInstall, setSoftwaresToInstall] = useState<
     Record<string, any>
   >({});
+
+  function installSoftwares() {
+    ipcRenderer.on("output", (event: any, arg: any) => {
+      output += `${arg}`;
+      setConsoleOutput(output);
+    });
+    ipcRenderer.send("install", { install: softwaresToInstall });
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -243,6 +252,36 @@ function App() {
           }}
         />
       ))}
+      <Button variant="contained" size="large" onClick={installSoftwares}>
+        Install
+      </Button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          marginTop: 20,
+        }}
+      >
+        <Typography variant="h6">Console Output</Typography>
+        <IconButton onClick={() => setShowConsoleOutput(!showConsoleOutput)}>
+          {!showConsoleOutput && <KeyboardArrowDown />}
+          {showConsoleOutput && <ExpandLess />}
+        </IconButton>
+      </div>
+      {showConsoleOutput && (
+        <Typography
+          style={{
+            whiteSpace: "pre-line",
+            fontSize: 10,
+            backgroundColor: "black",
+            color: "white",
+          }}
+        >
+          {consoleOutput}
+          {"\n\n"}
+          Listening for events...
+        </Typography>
+      )}
     </Box>
   );
 }
