@@ -78,6 +78,7 @@ export const Software = (props: SoftwareProps) => {
         <>
           {props?.software?.inputs?.map((input) => (
             <TextField
+              key={input?.id}
               id={input?.id}
               label={input?.label}
               variant="outlined"
@@ -141,12 +142,12 @@ function RenderSoftware(props: RenderSoftwareProps) {
         <>
           <Typography variant="h6">{software?.name}</Typography>
           {software?.softwares?.map((sub_software) => (
-            <>
+            <div key={sub_software?.id}>
               <RenderSoftware
                 software={sub_software}
                 onChange={props?.onChange}
               />
-            </>
+            </div>
           ))}
         </>
       )}
@@ -172,7 +173,11 @@ function SoftwareGroup(props: SoftwareGroupProps) {
       <Typography variant="h4">{software_group?.name}</Typography>
       <Divider style={{ padding: 5 }} />
       {software_group?.softwares?.map((software) => (
-        <RenderSoftware software={software} onChange={props?.onChange} />
+        <RenderSoftware
+          key={software?.id}
+          software={software}
+          onChange={props?.onChange}
+        />
       ))}
     </div>
   );
@@ -204,6 +209,7 @@ function App() {
       </AppBar>
       {softwares?.software_groups?.map((software_group) => (
         <SoftwareGroup
+          key={software_group?.id}
           software_group={software_group}
           onChange={(
             action: "ADD" | "REMOVE",
