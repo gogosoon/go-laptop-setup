@@ -1,34 +1,104 @@
 const path = require("path");
 const cmd = require("node-cmd");
-const { spawn } = require("child_process");
+const { spawn, execSync } = require("child_process");
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { ipcMain } = require("electron");
+const softwares = require("../src/softwares.json");
 
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
 
-ipcMain.on("install", (event, data) => {
-  // console.log("Event", event);
-
-  console.log("Data", JSON.stringify(data));
-  const idsOfSoftwaresToInstall = Object.keys(data?.install);
-  console.log("IDs of Softwares to Install", idsOfSoftwaresToInstall);
-
-  // for (let i = 0; i < data?.install?.length; i++) {
-  //   const response = cmd.runSync(`sudo apt-get install -y ${data?.install[i]}`);
-  //   console.log("Response", response?.data);
-  // }
-
-  const command = spawn("sudo", ["apt-get", "-y", "install", "npm"]);
-
-  // the `data` event is fired every time data is
-  // output from the command
-  command.stdout.on("data", (output) => {
-    // the output data is captured and printed in the callback
-    console.log("Output: ", output.toString());
-    event.reply("output", output.toString());
+function getRequiredSoftwaresInfo(
+  idsOfSoftwaresToInstall,
+  softwares,
+  softwaresInfo
+) {
+  softwares?.map((software) => {
+    if (software?.softwares) {
+      getRequiredSoftwaresInfo(
+        idsOfSoftwaresToInstall,
+        software?.softwares,
+        softwaresInfo
+      );
+    } else {
+      if (idsOfSoftwaresToInstall?.includes(software?.id)) {
+        softwaresInfo[software?.id] = software;
+      }
+    }
   });
+  return softwaresInfo;
+}
+
+function installSoftwaresUsingSpawn(software, event, resolve) {
+  console.log("Installing software using spawn", software);
+  for (let i = 0; i < software?.script?.length; i++) {
+    console.log(`Running ${i} in ${software?.name}`);
+    let script = software?.script[i];
+    let splitCommands = script?.split(" ");
+    const command = spawn(splitCommands[0], splitCommands?.slice(1));
+
+    command.stdout.on("data", (output) => {
+      // the output data is captured and printed in the callback
+      // console.log("Output: ", output.toString());
+      event.reply("output", output.toString());
+    });
+    command.on("close", (code) => {
+      resolve(code);
+    });
+    if (i == software?.script?.length - 1) {
+      console.log(`${software?.name} install complete`);
+      resolve("Done");
+    }
+  }
+
+  // await resolve("Done");
+}
+
+function installSoftwaresUsingExecSync(software, event, resolve) {
+  for (let i = 0; i < software?.script?.length; i++) {
+    console.log(`Running ${i} in ${software?.name}`);
+    let script = software?.script[i];
+    const command = execSync(script);
+
+    // console.log("Output ======================== ", command?.toString());
+    event.reply("output", command.toString());
+    if (i == software?.script?.length - 1) {
+      console.log(`${software?.name} install complete`);
+      resolve("Done");
+    }
+  }
+
+  // await resolve("Done");
+}
+
+async function installSoftware(software, event) {
+  await new Promise((resolve, reject) => {
+    event.reply("output", `Installing ${software?.name}... `);
+
+    if (software?.type == "spawn") {
+      installSoftwaresUsingSpawn(software, event, resolve);
+    } else if (software?.type == "execSync") {
+      installSoftwaresUsingExecSync(software, event, resolve);
+    }
+  });
+}
+
+ipcMain.on("install", async (event, data) => {
+  const idsOfSoftwaresToInstall = Object.keys(data?.install);
+
+  const installSoftwaresInfo = getRequiredSoftwaresInfo(
+    idsOfSoftwaresToInstall,
+    softwares?.software_groups,
+    {}
+  );
+
+  for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
+    await installSoftware(
+      installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
+      event
+    );
+  }
 });
 
 if (isDev) {
