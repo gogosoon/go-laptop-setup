@@ -3,6 +3,11 @@ import softwares from "./softwares.json";
 import {
   Button,
   Checkbox,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   FormControlLabel,
   IconButton,
@@ -190,14 +195,44 @@ function App() {
     Record<string, any>
   >({});
   const bottomRef = useRef<null | HTMLDivElement>(null);
+  const [isRootUser, setIsRootUser] = useState<boolean>(true);
+
+  function handleClose() {
+    ipcRenderer.send(`closeApp`);
+  }
 
   function installSoftwares() {
-    ipcRenderer.on("output", (event: any, arg: any) => {
-      output += `${arg}`;
-      setConsoleOutput(output);
-    });
     ipcRenderer.send("install", { install: softwaresToInstall });
   }
+
+  function startListeners() {
+    ipcRenderer.on("output", (event: any, message: any, arg: any) => {
+      output += `${message}`;
+      setConsoleOutput(output);
+
+      if (arg) {
+        switch (arg?.type) {
+          case `rootUserCheck`:
+            if (!arg?.status) {
+              setIsRootUser(false);
+            }
+            break;
+
+          default:
+            break;
+        }
+      }
+    });
+  }
+
+  function checkRootUser() {
+    ipcRenderer.send("checkRootUser");
+  }
+
+  useEffect(() => {
+    startListeners();
+    checkRootUser();
+  }, []);
 
   useEffect(() => {
     if (showConsoleOutput) {
@@ -286,6 +321,24 @@ function App() {
         </Typography>
       )}
       <div ref={bottomRef} />
+      <Dialog
+        open={!isRootUser}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Not a root user?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Please, remove password for sudo command and then continue
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} autoFocus>
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

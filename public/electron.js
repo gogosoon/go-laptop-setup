@@ -133,6 +133,8 @@ function createWindow() {
   if (isDev) {
     win.webContents.openDevTools({ mode: "detach" });
   }
+
+  checkPasswordRemovedForSudo();
 }
 
 // This method will be called when Electron has finished
@@ -167,3 +169,24 @@ app.on("activate", () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+function checkPasswordRemovedForSudo(event, data) {
+  const command = execSync(`sudo whoami`);
+  if (command.toString().trim() == `root`) {
+    console.info(`Current user is root...`);
+  } else {
+    event.reply(`output`, `To continue, you should have root access...`, {
+      type: "rootUserCheck",
+      status: false,
+    });
+    console.info(`To continue, you should have root access...`);
+  }
+}
+
+ipcMain.on("checkRootUser", async (event, data) => {
+  checkPasswordRemovedForSudo(event, data);
+});
+
+ipcMain.on(`closeApp`, async (event, data) => {
+  app.quit();
+});
