@@ -34,7 +34,7 @@
               "name": "Java 8 JRE",
               "description": "Java 8 Runtime Environment",
               "script": ["sudo apt install -y openjdk-8-jre-headless"],
-              "type": "spawn",
+              "type": "execSync",
               "test_script": "javac -version"
             },
             {
@@ -42,7 +42,7 @@
               "name": "Java 8 JDK",
               "description": "Java 8 Development Kit",
               "script": ["sudo apt install -y openjdk-8-jdk-headless"],
-              "type": "spawn",
+              "type": "execSync",
               "test_script": "java -version"
             }
           ]
@@ -52,7 +52,7 @@
           "name": "Git",
           "description": "Distributed Version Control System",
           "script": ["sudo apt install -y git"],
-          "type": "spawn",
+          "type": "execSync",
           "inputs": [
             {
               "id": "name",
@@ -71,21 +71,21 @@
           "name": "ADB",
           "description": "Android Debug Bridge",
           "script": ["sudo apt install -y adb"],
-          "type": "spawn"
+          "type": "execSync"
         },
         {
           "id": "8-net_tools",
           "name": "Net Tools",
           "description": "Includes the important tools for controlling the network subsystem of the Linux kernel",
           "script": ["sudo apt install -y net-tools"],
-          "type": "spawn"
+          "type": "execSync"
         },
         {
           "id": "9-xclip",
           "name": "X - Clip",
           "description": "Copy & Paste using CLI",
           "script": ["sudo apt install -y xclip"],
-          "type": "spawn"
+          "type": "execSync"
         },
         {
           "id": "10-nvm",
@@ -103,7 +103,7 @@
           "name": "Snap",
           "description": "Snap Package Manager",
           "script": ["sudo apt install -y snapd"],
-          "type": "spawn"
+          "type": "execSync"
         }
       ]
     }
