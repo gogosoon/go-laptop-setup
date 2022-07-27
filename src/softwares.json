@@ -99,10 +99,10 @@
           "type": "execSync"
         },
         {
-          "id": "11-snapd",
-          "name": "Snap",
-          "description": "Snap Package Manager",
-          "script": ["sudo apt install -y snapd"],
+          "id": "12-xclip",
+          "name": "X - Clip",
+          "description": "Copy & Paste using CLI",
+          "script": ["sudo apt install -y xclip"],
           "type": "execSync"
         }
       ]

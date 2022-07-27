@@ -175,6 +175,10 @@ async function checkPasswordRemovedForSudo(event, data) {
 
   if (command) {
     console.info(`Current user is root...`);
+    event.reply(`output`, `To continue, you should have root access...`, {
+      type: "rootUserCheck",
+      status: true,
+    });
   } else {
     event.reply(`output`, `To continue, you should have root access...`, {
       type: "rootUserCheck",

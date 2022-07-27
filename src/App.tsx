@@ -36,6 +36,7 @@ interface SoftwareProp {
   softwares?: SoftwareProp[];
   type?: string;
   inputs?: Input[];
+  required?: boolean;
 }
 
 interface SoftwareProps {
@@ -171,7 +172,7 @@ interface SoftwareGroupProps {
 }
 
 function SoftwareGroup(props: SoftwareGroupProps) {
-  const { software_group } = props;
+  const { software_group, onChange } = props;
   return (
     <div style={{ padding: 10 }}>
       <Typography variant="h4">{software_group?.name}</Typography>
@@ -180,7 +181,7 @@ function SoftwareGroup(props: SoftwareGroupProps) {
         <RenderSoftware
           key={software?.id}
           software={software}
-          onChange={props?.onChange}
+          onChange={onChange}
         />
       ))}
     </div>
@@ -198,12 +199,34 @@ function App() {
   const [isRootUser, setIsRootUser] = useState<boolean>(true);
 
   function handleClose() {
-    ipcRenderer.send(`closeApp`);
+    // ipcRenderer.send(`closeApp`);
+    setIsRootUser(true);
   }
 
   function installSoftwares() {
-    ipcRenderer.send("install", { install: softwaresToInstall });
+    checkRootUser();
   }
+
+  // function softwaresInstallation() {
+  //   if (isRootUser) {
+  //     console.log("all remaing softwares: ", softwaresToInstall);
+  //     ipcRenderer.send("install", {
+  //       install: {
+  //         "11-snapd": {
+  //           inputs: {
+  //             id: "11-snapd",
+  //             name: "Snap",
+  //             description: "Snap Package Manager",
+  //             script: ["sudo apt install -y snapd"],
+  //             type: "execSync",
+  //             required: true,
+  //           },
+  //         },
+  //         ...softwaresToInstall,
+  //       },
+  //     });
+  //   }
+  // }
 
   function startListeners() {
     ipcRenderer.on("output", (event: any, message: any, arg: any) => {
@@ -213,8 +236,12 @@ function App() {
       if (arg) {
         switch (arg?.type) {
           case `rootUserCheck`:
+            console.log("root user check switch case");
             if (!arg?.status) {
               setIsRootUser(false);
+            } else {
+              setIsRootUser(true);
+              // softwaresInstallation();
             }
             break;
 
@@ -231,7 +258,6 @@ function App() {
 
   useEffect(() => {
     startListeners();
-    checkRootUser();
   }, []);
 
   useEffect(() => {
