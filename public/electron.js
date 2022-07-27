@@ -1,11 +1,13 @@
 const path = require("path");
 const cmd = require("node-cmd");
-const { spawn, execSync } = require("child_process");
+const util = require("util");
+const { spawn, execSync, exec } = require("child_process");
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
 const { ipcMain } = require("electron");
 const softwares = require("../src/softwares.json");
 
+const execPromisify = util.promisify(exec);
 // Conditionally include the dev tools installer to load React Dev Tools
 let installExtension, REACT_DEVELOPER_TOOLS;
 
@@ -133,8 +135,6 @@ function createWindow() {
   if (isDev) {
     win.webContents.openDevTools({ mode: "detach" });
   }
-
-  checkPasswordRemovedForSudo();
 }
 
 // This method will be called when Electron has finished
@@ -170,9 +170,10 @@ app.on("activate", () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-function checkPasswordRemovedForSudo(event, data) {
-  const command = execSync(`sudo whoami`);
-  if (command.toString().trim() == `root`) {
+async function checkPasswordRemovedForSudo(event, data) {
+  const command = await executeAsyncCommand(`sudo -n true`);
+
+  if (command) {
     console.info(`Current user is root...`);
   } else {
     event.reply(`output`, `To continue, you should have root access...`, {
@@ -183,8 +184,27 @@ function checkPasswordRemovedForSudo(event, data) {
   }
 }
 
+async function executeAsyncCommand(command) {
+  try {
+    const { stdout, stderr } = await execPromisify(`${command}`);
+
+    if (stdout) {
+      return true;
+    }
+
+    if (stderr) {
+      return false;
+    }
+
+    return true;
+  } catch (e) {
+    console.error("executeAsyncCommand catch: ", e);
+    return false;
+  }
+}
+
 ipcMain.on("checkRootUser", async (event, data) => {
-  checkPasswordRemovedForSudo(event, data);
+  await checkPasswordRemovedForSudo(event, data);
 });
 
 ipcMain.on(`closeApp`, async (event, data) => {
