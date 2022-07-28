@@ -1,0 +1,22 @@
+.container {
+    margin: 5px;
+    border-radius: 5px;
+    padding-block-start: 10px;
+    padding-block-end: 10px;
+    background-color: bisque;
+    border-style: solid;
+    border-width: 1px;
+    border-color: goldenrod;
+}
+
+.title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.icon {
+    margin-inline-start: 10px;
+    margin-inline-end: 10px;
+    color: #1976d2;
+}
