@@ -285,7 +285,26 @@ function App() {
         title={
           <span>
             Please remove password prompt for sudo commands. Follow the steps in{" "}
-            <a href="">this tutorial</a> to remove password for sudo commands.
+            <a href="https://google.com" target={`_blank`}>
+              this tutorial
+            </a>{" "}
+            to remove password for sudo commands.
+          </span>
+        }
+      />
+      <Banner
+        title={
+          <span>
+            Snapd will be installed by default as part of this software
+            installation. Snap is a software packaging and deployment system
+            developed by Canonical for operating systems that use the Linux
+            kernel. To learn more about snapd, visit{" "}
+            <a
+              href="https://snapcraft.io/docs/installing-snap-on-ubuntu"
+              target={`_blank`}
+            >
+              Snap (Software)
+            </a>{" "}
           </span>
         }
       />
