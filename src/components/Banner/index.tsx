@@ -5,7 +5,7 @@ import "./index.css";
 interface Props {
   title: string | ReactNode;
   containerStyle?: React.CSSProperties;
-  titleStyle?: React.CSSProperties;
+  titleContainerStyle?: React.CSSProperties;
   iconStyle?: React.CSSProperties;
   icon?: ReactNode;
 }
@@ -13,13 +13,16 @@ interface Props {
 export const Banner = (props: Props) => {
   return (
     <div className={`container`} style={{ ...props?.containerStyle }}>
-      <span className={`title`} style={{ ...props?.titleStyle }}>
+      <div
+        className={`titleContainer`}
+        style={{ ...props?.titleContainerStyle }}
+      >
         {!props?.icon && (
           <Info className={`icon`} style={{ ...props?.iconStyle }} />
         )}
         {props?.icon}
         {props.title}
-      </span>
+      </div>
     </div>
   );
 };
