@@ -20,6 +20,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { KeyboardArrowDown, ExpandLess } from "@mui/icons-material";
+import { Banner } from "./components/Banner";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
@@ -280,6 +281,14 @@ function App() {
           </Typography>
         </Toolbar>
       </AppBar>
+      <Banner
+        title={
+          <span>
+            Please remove password prompt for sudo commands. Follow the steps in{" "}
+            <a href="">this tutorial</a> to remove password for sudo commands.
+          </span>
+        }
+      />
       {softwares?.software_groups?.map((software_group) => (
         <SoftwareGroup
           key={software_group?.id}
