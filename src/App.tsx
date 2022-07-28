@@ -205,29 +205,17 @@ function App() {
   }
 
   function installSoftwares() {
+    startListeners();
     checkRootUser();
   }
 
-  // function softwaresInstallation() {
-  //   if (isRootUser) {
-  //     console.log("all remaing softwares: ", softwaresToInstall);
-  //     ipcRenderer.send("install", {
-  //       install: {
-  //         "11-snapd": {
-  //           inputs: {
-  //             id: "11-snapd",
-  //             name: "Snap",
-  //             description: "Snap Package Manager",
-  //             script: ["sudo apt install -y snapd"],
-  //             type: "execSync",
-  //             required: true,
-  //           },
-  //         },
-  //         ...softwaresToInstall,
-  //       },
-  //     });
-  //   }
-  // }
+  function softwaresInstallation() {
+    if (isRootUser) {
+      ipcRenderer.send("install", {
+        install: softwaresToInstall,
+      });
+    }
+  }
 
   function startListeners() {
     ipcRenderer.on("output", (event: any, message: any, arg: any) => {
@@ -238,11 +226,18 @@ function App() {
         switch (arg?.type) {
           case `rootUserCheck`:
             console.log("root user check switch case");
-            if (!arg?.status) {
-              setIsRootUser(false);
-            } else {
+            if (arg?.status) {
               setIsRootUser(true);
-              // softwaresInstallation();
+              checkRequiredSoftwaresInstalled();
+            } else {
+              setIsRootUser(false);
+            }
+            break;
+
+          case `requiredSoftwaresInstalled`:
+            if (arg?.status) {
+              softwaresInstallation();
+            } else {
             }
             break;
 
@@ -257,9 +252,9 @@ function App() {
     ipcRenderer.send("checkRootUser");
   }
 
-  useEffect(() => {
-    startListeners();
-  }, []);
+  function checkRequiredSoftwaresInstalled() {
+    ipcRenderer.send(`installRequiredSoftwares`);
+  }
 
   useEffect(() => {
     if (showConsoleOutput) {

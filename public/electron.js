@@ -86,6 +86,27 @@ async function installSoftware(software, event) {
   });
 }
 
+ipcMain.on("installRequiredSoftwares", async (event, data) => {
+  const requiredSoftwares = [
+    {
+      id: "11-snapd",
+      name: "Snap",
+      description: "Snap Package Manager",
+      script: ["sudo apt install -y snapd"],
+      type: "execSync",
+    },
+  ];
+
+  for (let i = 0; i < requiredSoftwares?.length; i++) {
+    await installSoftware(requiredSoftwares[i], event);
+  }
+
+  event.reply(`output`, `required softwares are installed`, {
+    type: "requiredSoftwaresInstalled",
+    status: true,
+  });
+});
+
 ipcMain.on("install", async (event, data) => {
   const idsOfSoftwaresToInstall = Object.keys(data?.install);
 

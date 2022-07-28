@@ -97,13 +97,6 @@
             "source ~/.profile"
           ],
           "type": "execSync"
-        },
-        {
-          "id": "12-xclip",
-          "name": "X - Clip",
-          "description": "Copy & Paste using CLI",
-          "script": ["sudo apt install -y xclip"],
-          "type": "execSync"
         }
       ]
     }
