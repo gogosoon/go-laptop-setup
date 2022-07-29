@@ -97,6 +97,156 @@
             "source ~/.profile"
           ],
           "type": "execSync"
+        },
+        {
+          "id": "11-vscode",
+          "name": "VS Code & Extension",
+          "description": "Visual Studio Code is a lightweight but powerful source code editor",
+          "script": ["sudo snap install code"],
+          "type": "execSync"
+        },
+        {
+          "id": "12-vscode_extension",
+          "name": "VS Code extension",
+          "description": "VS Code extension",
+          "softwares": [
+            {
+              "id": "13-auto_rename_tag",
+              "name": "Auto Rename Tag",
+              "description": "Automatically rename paired HTML/XML tag, same as Visual Studio IDE does.",
+              "script": [
+                "code --install-extension formulahendry.auto-rename-tag"
+              ],
+              "type": "execSync"
+            },
+            {
+              "id": "14-git_lens",
+              "name": "GitLens — Git supercharged",
+              "description": "Supercharge Git within VS Code — Visualize code authorship at a glance via Git blame annotations and CodeLens, seamlessly navigate and explore Git repositories, gain valuable insights via rich visualizations and powerful comparison commands, and so much more.",
+              "script": ["code --install-extension eamodio.gitlens"],
+              "type": "execSync"
+            },
+            {
+              "id": "15-apollo_extension",
+              "name": "Apollo extension",
+              "description": "The Apollo VS Code extension provides an all-in-one tooling experience for developing apps with Apollo.",
+              "script": [
+                "code --install-extension apollographql.vscode-apollo"
+              ],
+              "type": "execSync"
+            },
+            {
+              "id": "16-react_native_tools",
+              "name": "React Native Tools",
+              "description": "Debugging and integrated commands for React Native.",
+              "script": [
+                "code --install-extension msjsdiag.vscode-react-native"
+              ],
+              "type": "execSync"
+            },
+            {
+              "id": "17-es7_react_redux_react_native_snippets",
+              "name": "ES7+ React/Redux/React-Native snippets",
+              "description": "Extensions for React, React-Native and Redux in JS/TS with ES7+ syntax. Customizable. Built-in integration with prettier.",
+              "script": [
+                "code --install-extension dsznajder.es7-react-js-snippets"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "18-python",
+              "name": "Python",
+              "description": "IntelliSense (Pylance), Linting, Debugging (multi-threaded, remote), Jupyter Notebooks, code formatting, refactoring, unit tests, and more.",
+              "script": ["code --install-extension ms-python.python"],
+              "type": "execSync"
+            },
+            {
+              "id": "19-debugger_for_firefox",
+              "name": "Debugger for Firefox",
+              "description": "Debug your web application or browser extension in Firefox.",
+              "script": [
+                "code --install-extension firefox-devtools.vscode-firefox-debug"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "20-debugger_for_chrome",
+              "name": "Debugger for Chrome",
+              "description": "Debug your JavaScript code in the Chrome browser, or any other target that supports the Chrome Debugger protocol.",
+              "script": [
+                "code --install-extension msjsdiag.debugger-for-chrome"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "21-docker",
+              "name": "Docker",
+              "description": "Makes it easy to create, manage, and debug containerized applications.",
+              "script": [
+                "code --install-extension ms-azuretools.vscode-docker"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "22-markdown_preview_enhanced",
+              "name": "Markdown Preview Enhanced",
+              "description": "Markdown Preview Enhanced ported to vscode.",
+              "script": [
+                "code --install-extension shd101wyy.markdown-preview-enhanced"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "23-php_debug_adapter",
+              "name": "PHP Debug Adapter",
+              "description": "PHP Debug Adapter for Visual Studio Code",
+              "script": ["code --install-extension felixfbecker.php-debug"],
+              "type": "execSync"
+            },
+
+            {
+              "id": "24-php_intelephense",
+              "name": "PHP Intelephense",
+              "description": "PHP code intelligence for Visual Studio Code",
+              "script": [
+                "code --install-extension bmewburn.vscode-intelephense-client"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "25-php_namespace_resolver",
+              "name": "PHP Namespace Resolver",
+              "description": "Import and expand php namespaces",
+              "script": [
+                "code --install-extension mehedidracula.php-namespace-resolver"
+              ],
+              "type": "execSync"
+            },
+
+            {
+              "id": "26-prettier",
+              "name": "Prettier - Code formatter",
+              "description": "Code formatter using prettier",
+              "script": ["code --install-extension esbenp.prettier-vscode"],
+              "type": "execSync"
+            },
+
+            {
+              "id": "27-clipboard_canager",
+              "name": "Clipboard Manager",
+              "description": "Clipboard Manager",
+              "script": [
+                "code --install-extension EdgardMessias.clipboard-manager"
+              ],
+              "type": "execSync"
+            }
+          ]
         }
       ]
     }
