@@ -59,15 +59,17 @@ function installSoftwaresUsingSpawn(software, event, resolve) {
 
 function installSoftwaresUsingExecSync(software, event, resolve) {
   for (let i = 0; i < software?.script?.length; i++) {
-    console.log(`Running ${i} in ${software?.name}`);
+    console.log(`Running ${i}. ${software?.script[i]} in ${software?.name}`);
     let script = software?.script[i];
-    const command = execSync(script);
-
-    // console.log("Output ======================== ", command?.toString());
-    event.reply("output", command.toString());
-    if (i == software?.script?.length - 1) {
-      console.log(`${software?.name} install complete`);
-      resolve("Done");
+    try {
+      const command = execSync(script);
+      event.reply("output", command.toString());
+      if (i == software?.script?.length - 1) {
+        console.log(`${software?.name} install complete`);
+        resolve("Done");
+      }
+    } catch (error) {
+      console.error("execSync error: ".error);
     }
   }
 
