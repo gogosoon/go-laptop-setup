@@ -295,12 +295,12 @@
           "type": "execSync"
         },
         {
-          "id": "12-xampp",
+          "id": "32-xampp",
           "name": "Xampp",
           "description": "XAMPP is a completely free, easy to install Apache distribution containing MariaDB, PHP, and Perl. The XAMPP open source package has been set up to be incredibly easy to install and to use.",
           "softwares": [
             {
-              "id": "13-xampp_7.4.29",
+              "id": "33-xampp_7.4.29",
               "name": "Xampp 7.4.29",
               "description": "Xampp 7.4.29",
               "script": [
@@ -311,7 +311,7 @@
               "type": "execSync"
             },
             {
-              "id": "13-xampp_8.1.6",
+              "id": "34-xampp_8.1.6",
               "name": "Xampp 8.1.6",
               "description": "Xampp 8.1.6",
               "script": [
