@@ -261,6 +261,38 @@
           "description": "Postman is an API platform for building and using APIs. Postman simplifies each step of the API lifecycle and streamlines collaboration so you can create better APIs—faster.",
           "script": ["sudo snap install postman"],
           "type": "execSync"
+        },
+        {
+          "id": "30-mailhog",
+          "name": "MailHog",
+          "description": "MailHog is an email-testing tool with a fake SMTP server underneath. It encapsulates the SMTP protocol with extensions and does not require specific backend implementations.",
+          "script": [
+            "wget https://github.com/mailhog/MailHog/releases/download/v1.0.1/MailHog_linux_amd64 -O mailhog",
+            "sudo mkdir /usr/local/apps/",
+            "sudo mv mailhog /usr/local/apps",
+            "sudo chmod +x /usr/local/apps/mailhog",
+            "echo '# MailHog' >> ~/.bashrc",
+            "echo 'alias mailhog=\"/usr/local/apps/mailhog\"' >> ~/.bashrc"
+          ],
+          "type": "execSync"
+        },
+        {
+          "id": "31-watchman",
+          "name": "Watchman",
+          "description": "Watchman exists to watch files and record when they actually change. It can also trigger actions (such as rebuilding assets) when matching files change.",
+          "script": [
+            "wget https://github.com/facebook/watchman/releases/download/v2022.07.25.00/watchman-v2022.07.25.00-linux.zip",
+            "unzip watchman-v2022.07.25.00-linux.zip",
+            "ls",
+            "cd ./watchman-v2022.07.25.00-linux",
+            "ls",
+            "sudo mkdir -p /usr/local/{bin,lib} /usr/local/var/run/watchman",
+            "sudo cp bin/* /usr/local/bin",
+            "sudo cp lib/* /usr/local/lib",
+            "sudo chmod 755 /usr/local/bin/watchman",
+            "sudo chmod 2777 /usr/local/var/run/watchman"
+          ],
+          "type": "execSync"
         }
       ]
     }
