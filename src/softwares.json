@@ -375,6 +375,34 @@
           "type": "execSync"
         }
       ]
+    },
+    {
+      "id": "gogosoon-group-1",
+      "name": "GoGoSoon",
+      "description": "This sections includes necessary GoGoSoon Apps",
+      "softwares": [
+        {
+          "id": "1-pritunl_client",
+          "name": "Pritunl Client",
+          "description": "Free and open source cross platform OpenVPN client.",
+          "script": [
+            "sudo tee /etc/apt/sources.list.d/pritunl.list << EOF deb https://repo.pritunl.com/stable/apt focal main EOF",
+            "sudo apt --assume-yes install gnupg",
+            "gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 7568D9BB55FF9E5287D586017AE645C0CF8E292A",
+            "gpg --armor --export 7568D9BB55FF9E5287D586017AE645C0CF8E292A | sudo tee /etc/apt/trusted.gpg.d/pritunl.asc",
+            "sudo apt update",
+            "sudo apt install pritunl-client-electron"
+          ],
+          "type": "execSync"
+        },
+        {
+          "id": "2-joplin",
+          "name": "Joplin",
+          "description": " Joplin is an open source note-taking app. Capture your thoughts and securely access them from any device.",
+          "script": ["sudo snap install joplin-desktop"],
+          "type": "execSync"
+        }
+      ]
     }
   ]
 }
