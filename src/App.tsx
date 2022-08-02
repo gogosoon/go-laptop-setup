@@ -225,7 +225,6 @@ function App() {
       if (arg) {
         switch (arg?.type) {
           case `rootUserCheck`:
-            console.log("root user check switch case");
             if (arg?.status) {
               setIsRootUser(true);
               checkRequiredSoftwaresInstalled();
