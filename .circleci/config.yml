@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  build_1:
+  build:
     working_directory: ~/repo
     docker:
       - image: circleci/node:16
@@ -31,12 +31,7 @@ jobs:
       - store_artifacts:
           path: ~/repo/out/make
 
-      - run:
-          name: "Publish Release on GitHub"
-          command:
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ~/repo/out/make
-
-  build_2:
+  publish:
     docker:
       - image: circleci/golang:1.8
     steps:
