@@ -32,8 +32,6 @@ jobs:
           path: ~/repo/out/make
 
   publish:
-    requires:
-      - build
     docker:
       - image: circleci/golang:1.8
     steps:
@@ -50,4 +48,6 @@ workflows:
   build_and_publish:
     jobs:
       - build
-      - publish
+      - publish:
+          requires:
+            - build
