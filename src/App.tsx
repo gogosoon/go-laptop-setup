@@ -68,7 +68,7 @@ export const Software = (props: SoftwareProps) => {
 
   useEffect(() => {
     onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
-  }, [checked, inputValues, onChange, software]);
+  }, [checked, inputValues, software]);
 
   return (
     <>
