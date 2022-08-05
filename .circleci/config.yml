@@ -34,7 +34,6 @@ jobs:
           name: "release"
           command: |
            curl -X POST \
-            -H "Content-Type: $(file -b --mime-type $FILE)" \ #from @galeksandrp's answer
             --upload-file "~/repo/out/make/deb/x64/go-laptop-setup_0.1.0_amd64.deb" \
             -H "Authorization: token ${GITHUB_TOKEN}" \
             -H "Accept: application/vnd.github.v3+json" \ 
