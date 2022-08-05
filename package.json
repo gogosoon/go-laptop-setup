@@ -1,6 +1,6 @@
 {
   "name": "go_laptop_setup",
-  "productName": "go_laptop_setup",
+  "productName": "Go Laptop Setup",
   "executableName": "go_laptop_setup",
   "version": "0.1.0",
   "main": "public/electron.js",
