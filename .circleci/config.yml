@@ -30,6 +30,16 @@ jobs:
 
       - store_artifacts:
           path: ~/repo/out/make
+      - run:
+          name: "release"
+          command: |
+           curl -X POST \
+            -H "Content-Type: $(file -b --mime-type $FILE)" \ #from @galeksandrp's answer
+            --upload-file "~/repo/out/make/deb/x64/go-laptop-setup_0.1.0_amd64.deb" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github.v3+json" \ 
+            https://uploads.github.com/repos/gogosoon/go-laptop-setup/releases/0.1.0/assets?name=soft.deb
+
 
   publish:
     docker:
@@ -41,6 +51,7 @@ jobs:
           name: "Publish Release on GitHub"
           command: |
             go install github.com/tcnksm/ghr@latest
+            
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ./go-laptop-setup_0.1.0_amd64.deb
 
 workflows:
