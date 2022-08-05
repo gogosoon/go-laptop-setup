@@ -8,12 +8,12 @@ jobs:
       - checkout
       - run:
           name: Update NPM
-          command: "sudo npm install -g npm"
+          command: "sudo npm install -g yarn"
       - restore_cache:
           key: dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install Dependencies
-          command: npm install
+          command: yarn install
       - run:
           name: Install dpkg and fakeroot
           command: |
@@ -26,7 +26,7 @@ jobs:
             - ./node_modules
       - run:
           name: Generate Builds
-          command: npm run make
+          command: yarn make
 
       - store_artifacts:
           path: ~/repo/out/make
