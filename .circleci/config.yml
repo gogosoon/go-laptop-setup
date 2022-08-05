@@ -39,7 +39,8 @@ jobs:
           at: ~/repo/out/make
       - run:
           name: "Publish Release on GitHub"
-          command:
+          command: |
+            go get github.com/tcnksm/ghr
             ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ~/repo/out/make
 
 workflows:
