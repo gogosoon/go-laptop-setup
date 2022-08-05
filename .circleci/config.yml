@@ -41,9 +41,7 @@ jobs:
           name: "Publish Release on GitHub"
           command: |
             go install github.com/tcnksm/ghr@latest
-            ls
-            find ~ -name go-laptop-setup_0.1.0_amd64.deb
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ~/repo/out/make/deb/x64/go-laptop-setup_0.1.0_amd64.deb
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ./go-laptop-setup_0.1.0_amd64.deb
 
 workflows:
   version: 2
