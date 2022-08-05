@@ -30,3 +30,14 @@ jobs:
 
       - store_artifacts:
           path: ~/repo/out/make
+
+publish-github-release:
+  docker:
+    - image: circleci/golang:1.8
+  steps:
+    - attach_workspace:
+        at: ~/repo/out/make
+    - run:
+        name: "Publish Release on GitHub"
+        command:
+          ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ~/repo/out/make
