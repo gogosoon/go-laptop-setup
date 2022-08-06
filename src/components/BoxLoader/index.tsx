@@ -15,6 +15,7 @@ interface Props {
     | "info"
     | "success"
     | "warning";
+  message?: string;
 }
 
 const BoxLoader = (props: Props) => {
@@ -32,6 +33,9 @@ const BoxLoader = (props: Props) => {
           thickness={4}
           color={props?.boxLoaderColor}
         />
+        {props?.message && (
+          <span className={`boxLoaderMessage`}>{props?.message}</span>
+        )}
       </div>
     </div>
   ) : null;
