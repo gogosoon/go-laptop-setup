@@ -1,4 +1,4 @@
-.container {
+.bannerContainer {
     margin: 5px;
     border-radius: 5px;
     padding-block-start: 10px;
@@ -9,13 +9,13 @@
     border-color: goldenrod;
 }
 
-.titleContainer {
+.bannerTitleContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
-.icon {
+.bannerIcon {
     margin-inline-start: 10px;
     margin-inline-end: 10px;
     color: #1976d2;
