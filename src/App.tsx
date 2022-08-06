@@ -21,6 +21,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { KeyboardArrowDown, ExpandLess } from "@mui/icons-material";
 import { Banner } from "./components/Banner";
+import BoxLoader from "./components/BoxLoader";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
@@ -198,6 +199,8 @@ function App() {
   >({});
   const bottomRef = useRef<null | HTMLDivElement>(null);
   const [isRootUser, setIsRootUser] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>("");
 
   function handleClose() {
     // ipcRenderer.send(`closeApp`);
@@ -237,6 +240,15 @@ function App() {
             if (arg?.status) {
               softwaresInstallation();
             } else {
+            }
+            break;
+
+          case `loading`:
+            setLoadingMessage(message);
+            if (arg?.status) {
+              setIsLoading(true);
+            } else {
+              setIsLoading(false);
             }
             break;
 
@@ -387,6 +399,7 @@ function App() {
           </Button>
         </DialogActions>
       </Dialog>
+      <BoxLoader loading={isLoading} message={loadingMessage} />
     </Box>
   );
 }

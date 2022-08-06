@@ -62,13 +62,29 @@ function installSoftwaresUsingExecSync(software, event, resolve) {
     console.log(`Running ${i}. ${software?.script[i]} in ${software?.name}`);
     let script = software?.script[i];
     try {
+      event.reply(
+        `output`,
+        `Running ${i}. ${software?.script[i]} in ${software?.name}`,
+        {
+          type: "loading",
+          status: true,
+        }
+      );
       const command = execSync(script);
       event.reply("output", command.toString());
       if (i == software?.script?.length - 1) {
         console.log(`${software?.name} install complete`);
+        event.reply(`output`, `${software?.name} install complete`, {
+          type: "loading",
+          status: false,
+        });
         resolve("Done");
       }
     } catch (error) {
+      event.reply(`output`, `${software?.name} install complete`, {
+        type: "loading",
+        status: false,
+      });
       console.error("execSync error: ".error);
     }
   }
