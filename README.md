@@ -28,24 +28,20 @@
 
 ## Installation
 
-- Using [npm](https://www.npmjs.com/#getting-started): `npm install react-native-gifted-chat --save`
-- Using [Yarn](https://yarnpkg.com/): `yarn add react-native-gifted-chat`
 
-<!-- ## Notes for local development
+## How to Contribute
 
-### Native
+1. Clone the repo `git clone https://github.com/gogosoon/go-laptop-setup.git`
+2. Install dependency 
+3. Start development 
 
-1. Install `yarn global add expo-cli`
-2. Install dependencies`yarn install`
-3. `expo start` -->
+```
+yarn install
+yarn dev
+```
 
-<!--
+## How to bundle for release
 
-## License
-
-- [MIT](LICENSE) -->
-<!--
-
-## Author
-
-Feel free to ask me questions on Twitter [@FaridSafi](https://www.twitter.com/FaridSafi)! or [@xcapetir](https://www.twitter.com/xcapetir)! -->
+```
+yarn make
+```
