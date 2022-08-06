@@ -1,0 +1,24 @@
+.boxLoaderContainer {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: rgb(109, 104, 104);
+  opacity: 0.5;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.boxLoaderContent {
+  height: 100px;
+  width: 100px;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
