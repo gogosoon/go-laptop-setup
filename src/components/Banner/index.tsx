@@ -12,13 +12,13 @@ interface Props {
 
 export const Banner = (props: Props) => {
   return (
-    <div className={`container`} style={{ ...props?.containerStyle }}>
+    <div className={`bannerContainer`} style={{ ...props?.containerStyle }}>
       <div
-        className={`titleContainer`}
+        className={`bannerTitleContainer`}
         style={{ ...props?.titleContainerStyle }}
       >
         {!props?.icon && (
-          <Info className={`icon`} style={{ ...props?.iconStyle }} />
+          <Info className={`bannerIcon`} style={{ ...props?.iconStyle }} />
         )}
         {props?.icon}
         {props.title}
