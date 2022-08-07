@@ -31,7 +31,7 @@ jobs:
           command: yarn make
 
       - store_artifacts:
-          path: ~/repo/out/make
+          path: ~/repo/out/make/deb/x64/go-laptop-setup_0.3.0_amd64.deb
 
       - github-release/release
 
