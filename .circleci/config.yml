@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  github-release: h-matsuo/github-release@0.1.1
+  github-release: duffn/github-release@0.1
 jobs:
   build:
     working_directory: ~/repo
@@ -33,11 +33,7 @@ jobs:
       - store_artifacts:
           path: ~/repo/out/make
 
-      - github-release/create:
-          tag: 0.2.0
-          title: Go Laptop Setup - v0.2.0
-          description: This release is version v0.2.0
-          file-path: ~/repo/out/make/deb/x64/go-laptop-setup_0.2.0_amd64.deb
+      - github-release/release
 
   publish:
     docker:
