@@ -1,6 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import softwares from "./softwares.json";
 import {
+  ExpandLess,
+  InstallDesktop,
+  KeyboardArrowDown,
+} from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import {
+  AppBar,
+  Box,
   Button,
   Checkbox,
   Dialog,
@@ -13,20 +19,13 @@ import {
   IconButton,
   Popover,
   TextField,
-  Typography,
   Toolbar,
-  Box,
-  AppBar,
+  Typography,
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
-import {
-  KeyboardArrowDown,
-  ExpandLess,
-  InstallDesktop,
-} from "@mui/icons-material";
 import { Banner } from "./components/Banner";
-import BoxLoader from "./components/BoxLoader";
+import softwares from "./softwares.json";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
