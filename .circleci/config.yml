@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  github-release: h-matsuo/github-release@0.1.1
 jobs:
   build:
     working_directory: ~/repo
@@ -30,15 +32,12 @@ jobs:
 
       - store_artifacts:
           path: ~/repo/out/make
-      - run:
-          name: "release"
-          command: |
-           curl -X POST \
-            --upload-file "~/repo/out/make/deb/x64/go-laptop-setup_0.2.0_amd64.deb" \
-            -H "Authorization: token ${GITHUB_TOKEN}" \
-            -H "Accept: application/vnd.github.v3+json" \ 
-            https://uploads.github.com/repos/gogosoon/go-laptop-setup/releases/0.1.0/assets?name=soft.deb
 
+      - github-release/create:
+          tag: 0.2.0
+          title: Go Laptop Setup - v0.2.0
+          description: This release is version v0.2.0
+          file-path: ~/repo/out/make/deb/x64/go-laptop-setup_0.2.0_amd64.deb
 
   publish:
     docker:
