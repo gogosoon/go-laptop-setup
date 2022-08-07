@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  github-release: duffn/github-release@0.1
 jobs:
   build:
     working_directory: ~/repo
@@ -31,6 +33,8 @@ jobs:
       - store_artifacts:
           path: ~/repo/out/make
 
+      - github-release/release
+
   publish:
     docker:
       - image: cimg/go:1.19.0
@@ -42,7 +46,7 @@ jobs:
           command: |
             go install github.com/tcnksm/ghr@latest
             
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ./*
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ./go-laptop-setup_0.1.0_amd64.deb
 
 workflows:
   version: 2
