@@ -35,24 +35,8 @@ jobs:
 
       - github-release/release
 
-  publish:
-    docker:
-      - image: cimg/go:1.19.0
-    steps:
-      - attach_workspace:
-          at: ~/repo/out/make
-      - run:
-          name: "Publish Release on GitHub"
-          command: |
-            go install github.com/tcnksm/ghr@latest
-            
-            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete 0.1.0 ./go-laptop-setup_0.1.0_amd64.deb
-
 workflows:
   version: 2
   build_and_publish:
     jobs:
       - build
-      - publish:
-          requires:
-            - build
