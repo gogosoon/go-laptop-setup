@@ -15,10 +15,10 @@ jobs:
           name: Install Dependencies
           command: yarn install
       - run:
-          name: Install dpkg, fakeroot and rpm
+          name: Install dpkg and fakeroot
           command: |
             sudo apt-get update -y
-            sudo apt-get install -y dpkg fakeroot rpm
+            sudo apt-get install -y dpkg fakeroot
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
