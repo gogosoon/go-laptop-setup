@@ -13,13 +13,18 @@ import {
   IconButton,
   Popover,
   TextField,
+  Typography,
+  Toolbar,
+  Box,
+  AppBar,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
 import "./App.css";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import { KeyboardArrowDown, ExpandLess } from "@mui/icons-material";
+import {
+  KeyboardArrowDown,
+  ExpandLess,
+  InstallDesktop,
+} from "@mui/icons-material";
 import { Banner } from "./components/Banner";
 import BoxLoader from "./components/BoxLoader";
 const { ipcRenderer } = window.require("electron");
@@ -350,9 +355,32 @@ function App() {
           }}
         />
       ))}
-      <Button variant="contained" size="large" onClick={installSoftwares}>
+      <LoadingButton
+        variant="contained"
+        size="large"
+        onClick={installSoftwares}
+        loading={isLoading}
+        disabled={isLoading}
+        loadingPosition="start"
+        startIcon={<InstallDesktop />}
+      >
         Install
-      </Button>
+      </LoadingButton>
+      <br />
+      <br />
+      {isLoading && (
+        <Typography
+          sx={{
+            display: "-webkit-box",
+            overflow: "hidden",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 2,
+          }}
+          variant="body1"
+        >
+          {loadingMessage}
+        </Typography>
+      )}
       <div
         style={{
           display: "flex",
@@ -399,7 +427,7 @@ function App() {
           </Button>
         </DialogActions>
       </Dialog>
-      <BoxLoader loading={isLoading} message={loadingMessage} />
+      {/* <BoxLoader loading={isLoading} message={loadingMessage} /> */}
     </Box>
   );
 }

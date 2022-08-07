@@ -49,7 +49,7 @@ function installSoftwaresUsingSpawn(software, event, resolve) {
       resolve(code);
     });
     if (i == software?.script?.length - 1) {
-      console.log(`${software?.name} install complete`);
+      console.log(`${software?.name} installation complete`);
       resolve("Done");
     }
   }
@@ -74,7 +74,15 @@ async function installSoftwaresUsingExecSync(software, event, resolve1) {
         exec(script, (error, stdout, stderr) => {
           if (error) {
             console.error(`exec error: ${error}`);
-            return;
+            event.reply(
+              `output`,
+              `${software?.name} installation failed: ${error}`,
+              {
+                type: "loading",
+                status: true,
+              }
+            );
+            resolve("Done");
           }
 
           console.log(`stdout of ${i}: ${stdout}`);
@@ -82,10 +90,10 @@ async function installSoftwaresUsingExecSync(software, event, resolve1) {
           console.error(`stderr  of ${i}: ${stderr}`);
 
           if (i == software?.script?.length - 1) {
-            console.log(`${software?.name} install complete`);
-            event.reply(`output`, `${software?.name} install complete`, {
+            console.log(`${software?.name} installation complete`);
+            event.reply(`output`, `${software?.name} installation complete`, {
               type: "loading",
-              status: false,
+              status: true,
             });
             resolve("Done");
           }
@@ -94,10 +102,14 @@ async function installSoftwaresUsingExecSync(software, event, resolve1) {
 
         // event.reply("output", command.toString());
       } catch (error) {
-        event.reply(`output`, `${software?.name} install complete`, {
-          type: "loading",
-          status: false,
-        });
+        event.reply(
+          `output`,
+          `${software?.name} installation failed: ${error.message}`,
+          {
+            type: "loading",
+            status: true,
+          }
+        );
         console.error("execSync error: ".error);
         resolve("Done");
       }
@@ -150,13 +162,25 @@ ipcMain.on("install", async (event, data) => {
     {}
   );
 
-  for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
-    await new Promise(async (resolve, reject) => {
-      await installSoftware(
-        installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
-        event
-      );
-      resolve("Done");
+  try {
+    for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
+      await new Promise(async (resolve, reject) => {
+        await installSoftware(
+          installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
+          event
+        );
+        resolve("Done");
+      });
+    }
+
+    event.reply(`output`, `All software installation completed`, {
+      type: "loading",
+      status: false,
+    });
+  } catch (error) {
+    event.reply(`output`, `Software installation failed`, {
+      type: "loading",
+      status: false,
     });
   }
 });
