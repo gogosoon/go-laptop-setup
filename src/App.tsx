@@ -74,7 +74,7 @@ export const Software = (props: SoftwareProps) => {
 
   useEffect(() => {
     onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
-  }, [checked, inputValues, software]);
+  }, [checked, inputValues, software]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
