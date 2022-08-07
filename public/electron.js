@@ -57,49 +57,65 @@ function installSoftwaresUsingSpawn(software, event, resolve) {
   // await resolve("Done");
 }
 
-function installSoftwaresUsingExecSync(software, event, resolve) {
+async function installSoftwaresUsingExecSync(software, event, resolve1) {
   for (let i = 0; i < software?.script?.length; i++) {
     console.log(`Running ${i}. ${software?.script[i]} in ${software?.name}`);
-    let script = software?.script[i];
-    try {
-      event.reply(
-        `output`,
-        `Running ${i}. ${software?.script[i]} in ${software?.name}`,
-        {
-          type: "loading",
-          status: true,
-        }
-      );
-      const command = execSync(script);
-      event.reply("output", command.toString());
-      if (i == software?.script?.length - 1) {
-        console.log(`${software?.name} install complete`);
+    await new Promise((resolve, reject) => {
+      let script = software?.script[i];
+      try {
+        event.reply(
+          `output`,
+          `Running ${i}. ${software?.script[i]} in ${software?.name}`,
+          {
+            type: "loading",
+            status: true,
+          }
+        );
+        exec(script, (error, stdout, stderr) => {
+          if (error) {
+            console.error(`exec error: ${error}`);
+            return;
+          }
+
+          console.log(`stdout of ${i}: ${stdout}`);
+          event.reply("output", stdout.toString());
+          console.error(`stderr  of ${i}: ${stderr}`);
+
+          if (i == software?.script?.length - 1) {
+            console.log(`${software?.name} install complete`);
+            event.reply(`output`, `${software?.name} install complete`, {
+              type: "loading",
+              status: false,
+            });
+            resolve("Done");
+          }
+          resolve("Done");
+        });
+
+        // event.reply("output", command.toString());
+      } catch (error) {
         event.reply(`output`, `${software?.name} install complete`, {
           type: "loading",
           status: false,
         });
+        console.error("execSync error: ".error);
         resolve("Done");
       }
-    } catch (error) {
-      event.reply(`output`, `${software?.name} install complete`, {
-        type: "loading",
-        status: false,
-      });
-      console.error("execSync error: ".error);
-    }
+    });
   }
+  resolve1("Done");
 
   // await resolve("Done");
 }
 
 async function installSoftware(software, event) {
-  await new Promise((resolve, reject) => {
+  await new Promise(async (resolve, reject) => {
     event.reply("output", `Installing ${software?.name}... `);
 
     if (software?.type == "spawn") {
       installSoftwaresUsingSpawn(software, event, resolve);
     } else if (software?.type == "execSync") {
-      installSoftwaresUsingExecSync(software, event, resolve);
+      await installSoftwaresUsingExecSync(software, event, resolve);
     }
   });
 }
@@ -135,10 +151,13 @@ ipcMain.on("install", async (event, data) => {
   );
 
   for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
-    await installSoftware(
-      installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
-      event
-    );
+    await new Promise(async (resolve, reject) => {
+      await installSoftware(
+        installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
+        event
+      );
+      resolve("Done");
+    });
   }
 });
 
