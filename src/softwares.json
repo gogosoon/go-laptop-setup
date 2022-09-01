@@ -402,6 +402,16 @@
             "sudo snap install android-studio --classic"
           ],
           "type": "execSync"
+        },
+        {
+          "id": "7-mongodb-compass",
+          "name": "MongoDB Compass",
+          "description": "MongoDB Compass is a powerful GUI for querying, aggregating, and analyzing your MongoDB data in a visual environment.",
+          "script": [
+            "wget https://downloads.mongodb.com/compass/mongodb-compass_1.32.3_amd64.deb",
+            "sudo dpkg -i mongodb-compass_1.32.3_amd64.deb"
+          ],
+          "type": "execSync"
         }
       ]
     },
