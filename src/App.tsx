@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import softwares from "./softwares.json";
 import {
   Button,
@@ -17,6 +23,7 @@ import {
   Toolbar,
   Box,
   AppBar,
+  Grid,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import "./App.css";
@@ -48,6 +55,7 @@ interface SoftwareProp {
 
 interface SoftwareProps {
   software: SoftwareProp;
+  setChecked?: boolean;
   onChange: (
     action: "ADD" | "REMOVE",
     id: string,
@@ -59,7 +67,7 @@ interface SoftwareProps {
 export const Software = (props: SoftwareProps) => {
   const { onChange, software } = props;
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
-  const [checked, setChecked] = useState(false);
+  const [checked, setChecked] = useState<boolean>(false);
   const [inputValues, setInputValues] = useState<Record<string, string>>({});
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -71,10 +79,13 @@ export const Software = (props: SoftwareProps) => {
   };
 
   const open = Boolean(anchorEl);
+  useEffect(() => {
+    setChecked(props?.setChecked === false ? false : true);
+  }, [props?.setChecked]);
 
   useEffect(() => {
     onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
-  }, [checked, inputValues, software]);
+  }, [checked, inputValues, software, onChange]);
 
   return (
     <>
@@ -133,6 +144,7 @@ export const Software = (props: SoftwareProps) => {
 
 interface RenderSoftwareProps {
   software: SoftwareProp;
+  setChecked?: boolean;
   onChange: (
     action: "ADD" | "REMOVE",
     id: string,
@@ -143,21 +155,46 @@ interface RenderSoftwareProps {
 
 function RenderSoftware(props: RenderSoftwareProps) {
   const { software } = props;
+  const [groupChecked, setGroupChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    setGroupChecked(props?.setChecked === false ? false : true);
+  }, [props?.setChecked]);
+
   return (
     <>
       {!software?.softwares && (
         <>
-          <Software software={software} onChange={props?.onChange} />
+          <Software
+            software={software}
+            setChecked={props?.setChecked}
+            onChange={props?.onChange}
+          />
         </>
       )}
       {software?.softwares && (
         <>
+          <FormControlLabel
+            control={<Checkbox />}
+            label={""}
+            value={groupChecked}
+            onChange={() => {
+              setGroupChecked(!groupChecked);
+            }}
+          />
+
+          {/* // () => props?.onChange("ADD",sub_software?.id) */}
           <Typography variant="h6">{software?.name}</Typography>
           {software?.softwares?.map((sub_software) => (
             <div key={sub_software?.id}>
               <RenderSoftware
                 software={sub_software}
-                onChange={props?.onChange}
+                setChecked={groupChecked}
+                onChange={
+                  groupChecked
+                    ? props?.onChange
+                    : () => props?.onChange("ADD", sub_software.id)
+                }
               />
             </div>
           ))}
@@ -180,12 +217,23 @@ interface SoftwareGroupProps {
 
 function SoftwareGroup(props: SoftwareGroupProps) {
   const { software_group, onChange } = props;
+  const [groupChecked, setGroupChecked] = useState<boolean>(false);
+
   return (
     <div style={{ padding: 10 }}>
+      <FormControlLabel
+        control={<Checkbox />}
+        label={""}
+        value={groupChecked}
+        onChange={() => {
+          setGroupChecked(!groupChecked);
+        }}
+      />
       <Typography variant="h4">{software_group?.name}</Typography>
       <Divider style={{ padding: 5 }} />
       {software_group?.softwares?.map((software) => (
         <RenderSoftware
+          setChecked={groupChecked}
           key={software?.id}
           software={software}
           onChange={onChange}
