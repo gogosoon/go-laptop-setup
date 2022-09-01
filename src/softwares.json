@@ -102,7 +102,13 @@
           "id": "11-vscode",
           "name": "VS Code & Extension",
           "description": "Visual Studio Code is a lightweight but powerful source code editor",
-          "script": ["sudo snap install code"],
+          "script": [
+            "sudo snap install code --classic",
+            "touch .file-paths",
+            "echo 'source ~/.file-paths' >> ~/.bashrc",
+            "echo 'export PATH='/snap/bin/:$PATH'' >> ~/.file-paths",
+            "source ~/.bashrc"
+          ],
           "type": "execSync"
         },
         {
@@ -252,7 +258,13 @@
           "id": "28-qemu",
           "name": "QEMU",
           "description": "A generic and open source machine emulator and virtualizer",
-          "script": ["sudo apt-get install qemu"],
+          "script": [
+            "sudo apt install -y qemu-kvm",
+            "ls -al /dev/kvm",
+            "grep kvm /etc/group",
+            "sudo adduser $USER kvm",
+            "grep kvm /etc/group"
+          ],
           "type": "execSync"
         },
         {
@@ -331,7 +343,7 @@
       "description": "This sections includes necessary Business Apps",
       "softwares": [
         {
-          "id": "1-gogole_chrome",
+          "id": "1-google_chrome",
           "name": "Google Chrome",
           "description": "Google Chrome is a cross-platform web browser developed by Google",
           "script": [
@@ -371,6 +383,23 @@
             "wget -O- https://www.virtualbox.org/download/oracle_vbox_2016.asc | sudo gpg --dearmor --yes --output /usr/share/keyrings/oracle-virtualbox-2016.gpg",
             "sudo apt update",
             "sudo apt install virtualbox -y"
+          ],
+          "type": "execSync"
+        },
+        {
+          "id": "5-mozilla-firefox",
+          "name": "Mozilla Firefox",
+          "description": "Mozilla Firefox, or simply Firefox, is a free and open-source[20] web browser developed by the Mozilla Foundation",
+          "script": ["sudo apt-get -y install firefox"],
+          "type": "execSync"
+        },
+        {
+          "id": "6-android-studio",
+          "name": "Android Studio",
+          "description": "Android Studio is the official integrated development environment (IDE) for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development.",
+          "script": [
+            "sudo apt install -y openjdk-8-jdk-headless",
+            "sudo snap install android-studio --classic"
           ],
           "type": "execSync"
         }
