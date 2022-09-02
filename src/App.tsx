@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import softwares from "./softwares.json";
 import {
   Button,
@@ -23,7 +17,6 @@ import {
   Toolbar,
   Box,
   AppBar,
-  Grid,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import "./App.css";
@@ -55,7 +48,7 @@ interface SoftwareProp {
 
 interface SoftwareProps {
   software: SoftwareProp;
-  setChecked?: boolean;
+  checked?: boolean;
   onChange: (
     action: "ADD" | "REMOVE",
     id: string,
@@ -80,12 +73,12 @@ export const Software = (props: SoftwareProps) => {
 
   const open = Boolean(anchorEl);
   useEffect(() => {
-    setChecked(props?.setChecked === false ? false : true);
-  }, [props?.setChecked]);
+    setChecked(props?.checked === false ? false : true);
+  }, [props?.checked]);
 
   useEffect(() => {
     onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
-  }, [checked, inputValues, software, onChange]);
+  }, [checked, inputValues, software]);
 
   return (
     <>
@@ -144,7 +137,7 @@ export const Software = (props: SoftwareProps) => {
 
 interface RenderSoftwareProps {
   software: SoftwareProp;
-  setChecked?: boolean;
+  checked?: boolean;
   onChange: (
     action: "ADD" | "REMOVE",
     id: string,
@@ -158,8 +151,10 @@ function RenderSoftware(props: RenderSoftwareProps) {
   const [groupChecked, setGroupChecked] = useState<boolean>(false);
 
   useEffect(() => {
-    setGroupChecked(props?.setChecked === false ? false : true);
-  }, [props?.setChecked]);
+    setGroupChecked(
+      props?.checked === true && groupChecked === false ? true : false
+    );
+  }, [props?.checked]);
 
   return (
     <>
@@ -167,7 +162,7 @@ function RenderSoftware(props: RenderSoftwareProps) {
         <>
           <Software
             software={software}
-            setChecked={props?.setChecked}
+            checked={props?.checked}
             onChange={props?.onChange}
           />
         </>
@@ -176,25 +171,20 @@ function RenderSoftware(props: RenderSoftwareProps) {
         <>
           <FormControlLabel
             control={<Checkbox />}
-            label={""}
-            value={groupChecked}
+            label={<Typography variant="h6">{software?.name}</Typography>}
+            checked={groupChecked}
             onChange={() => {
               setGroupChecked(!groupChecked);
             }}
           />
 
-          {/* // () => props?.onChange("ADD",sub_software?.id) */}
-          <Typography variant="h6">{software?.name}</Typography>
+          
           {software?.softwares?.map((sub_software) => (
             <div key={sub_software?.id}>
               <RenderSoftware
                 software={sub_software}
-                setChecked={groupChecked}
-                onChange={
-                  groupChecked
-                    ? props?.onChange
-                    : () => props?.onChange("ADD", sub_software.id)
-                }
+                checked={groupChecked}
+                onChange={props?.onChange}
               />
             </div>
           ))}
@@ -223,17 +213,17 @@ function SoftwareGroup(props: SoftwareGroupProps) {
     <div style={{ padding: 10 }}>
       <FormControlLabel
         control={<Checkbox />}
-        label={""}
+        label={<Typography variant="h4">{software_group?.name}</Typography>}
         value={groupChecked}
         onChange={() => {
-          setGroupChecked(!groupChecked);
+          setGroupChecked(groupChecked === false ? true : false);
         }}
       />
-      <Typography variant="h4">{software_group?.name}</Typography>
+      
       <Divider style={{ padding: 5 }} />
       {software_group?.softwares?.map((software) => (
         <RenderSoftware
-          setChecked={groupChecked}
+          checked={groupChecked}
           key={software?.id}
           software={software}
           onChange={onChange}
@@ -326,6 +316,7 @@ function App() {
     }
   }, [consoleOutput, showConsoleOutput]);
 
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -383,19 +374,18 @@ function App() {
                   inputs,
                   metadata,
                 };
-                setSoftwaresToInstall({
-                  ...softwaresToInstall,
+                setSoftwaresToInstall((old) => ({
+                  ...old,
                   [id]: newSoftware,
-                });
+                }));
                 break;
+                
               }
               case "REMOVE": {
                 let allSoftwares = softwaresToInstall;
-
                 if (allSoftwares[id]) {
                   delete allSoftwares[id];
                 }
-
                 setSoftwaresToInstall(allSoftwares);
                 break;
               }
