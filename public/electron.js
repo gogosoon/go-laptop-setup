@@ -170,37 +170,40 @@ ipcMain.on("install", async (event, data) => {
   await installRequiredSoftware(event);
 
   // Install selected softwares
-
-  // const idsOfSoftwaresToInstall = Object.keys(data?.install);
-
-  // const installSoftwaresInfo = getRequiredSoftwaresInfo(
-  //   idsOfSoftwaresToInstall,
-  //   softwares?.software_groups,
-  //   {}
-  // );
-
-  // try {
-  //   for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
-  //     await new Promise(async (resolve, reject) => {
-  //       await installSoftware(
-  //         installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
-  //         event
-  //       );
-  //       resolve("Done");
-  //     });
-  //   }
-
-  //   event.reply(`output`, `All software installation completed`, {
-  //     type: "loading",
-  //     status: false,
-  //   });
-  // } catch (error) {
-  //   event.reply(`output`, `Software installation failed`, {
-  //     type: "loading",
-  //     status: false,
-  //   });
-  // }
+  await installSelectedSoftware(event, data);
 });
+
+async function installSelectedSoftware(event, data) {
+  const idsOfSoftwaresToInstall = Object.keys(data?.install);
+
+  const installSoftwaresInfo = getRequiredSoftwaresInfo(
+    idsOfSoftwaresToInstall,
+    softwares?.software_groups,
+    {}
+  );
+
+  try {
+    for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
+      await new Promise(async (resolve, reject) => {
+        await installSoftware(
+          installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
+          event
+        );
+        resolve("Done");
+      });
+    }
+
+    event.reply(`output`, `All software installation completed`, {
+      type: "loading",
+      status: false,
+    });
+  } catch (error) {
+    event.reply(`output`, `Software installation failed`, {
+      type: "loading",
+      status: false,
+    });
+  }
+}
 
 if (isDev) {
   const devTools = require("electron-devtools-installer");
