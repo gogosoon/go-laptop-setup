@@ -219,7 +219,7 @@ function SoftwareGroup(props: SoftwareGroupProps) {
           setGroupChecked(groupChecked === false ? true : false);
         }}
       />
-      
+
       <Divider style={{ padding: 5 }} />
       {software_group?.softwares?.map((software) => (
         <RenderSoftware
@@ -251,7 +251,7 @@ function App() {
   }
 
   function installSoftwares() {
-    // startListeners();
+    startListener();
     checkRootUser();
   }
 
@@ -263,7 +263,7 @@ function App() {
     }
   }
 
-  useEffect(() => {
+  function startListener() {
     ipcRenderer.on("output", (event: any, message: any, arg: any) => {
       output += `${message}`;
       setConsoleOutput(output);
@@ -300,16 +300,7 @@ function App() {
         }
       }
     });
-
-
-    return () => {
-      ipcRenderer.removeListener("output", () => {
-        console.log("============================================================");
-        console.log("Listener removed");
-        console.log("============================================================");
-      })
-    }
-  }, []);
+  }
 
   function checkRootUser() {
     ipcRenderer.send("checkRootUser");
