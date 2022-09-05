@@ -241,26 +241,23 @@ function App() {
     Record<string, any>
   >({});
   const bottomRef = useRef<null | HTMLDivElement>(null);
-  const [isRootUser, setIsRootUser] = useState<boolean>(true);
+  const [nonRootUser, setNonRootUser] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>("");
 
   function handleClose() {
-    // ipcRenderer.send(`closeApp`);
-    setIsRootUser(true);
+    setNonRootUser(false);
   }
 
   function installSoftwares() {
     startListener();
-    checkRootUser();
+    softwaresInstallation();
   }
 
   function softwaresInstallation() {
-    if (isRootUser) {
-      ipcRenderer.send("install", {
-        install: softwaresToInstall,
-      });
-    }
+    ipcRenderer.send("install", {
+      install: softwaresToInstall,
+    });
   }
 
   function startListener() {
@@ -271,12 +268,7 @@ function App() {
       if (arg) {
         switch (arg?.type) {
           case `rootUserCheck`:
-            if (arg?.status) {
-              setIsRootUser(true);
-              checkRequiredSoftwaresInstalled();
-            } else {
-              setIsRootUser(false);
-            }
+            setNonRootUser(true);
             break;
 
           case `requiredSoftwaresInstalled`:
@@ -300,14 +292,6 @@ function App() {
         }
       }
     });
-  }
-
-  function checkRootUser() {
-    ipcRenderer.send("checkRootUser");
-  }
-
-  function checkRequiredSoftwaresInstalled() {
-    ipcRenderer.send(`installRequiredSoftwares`);
   }
 
   useEffect(() => {
@@ -379,7 +363,7 @@ function App() {
                   [id]: newSoftware,
                 }));
                 break;
-                
+
               }
               case "REMOVE": {
                 let allSoftwares = softwaresToInstall;
@@ -448,7 +432,7 @@ function App() {
       )}
       <div ref={bottomRef} />
       <Dialog
-        open={!isRootUser}
+        open={nonRootUser}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

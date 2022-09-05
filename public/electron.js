@@ -154,6 +154,14 @@ ipcMain.on("installRequiredSoftwares", async (event, data) => {
 });
 
 ipcMain.on("install", async (event, data) => {
+
+  // Root user check
+  await checkPasswordRemovedForSudo(event);
+
+  // Install required softwares
+
+  // Install selected softwares
+
   const idsOfSoftwaresToInstall = Object.keys(data?.install);
 
   const installSoftwaresInfo = getRequiredSoftwaresInfo(
@@ -256,17 +264,11 @@ async function checkPasswordRemovedForSudo(event, data) {
   const command = await executeAsyncCommand(`sudo -n true`);
 
   if (command) {
-    console.info(`Current user is root...`);
-    event.reply(`output`, `To continue, you should have root access...`, {
-      type: "rootUserCheck",
-      status: true,
-    });
+    console.log("Root User ======================== ");
   } else {
     event.reply(`output`, `To continue, you should have root access...`, {
       type: "rootUserCheck",
-      status: false,
     });
-    console.info(`To continue, you should have root access...`);
   }
 }
 
