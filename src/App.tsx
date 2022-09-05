@@ -374,8 +374,8 @@ function App() {
         variant="contained"
         size="large"
         onClick={installSoftwares}
-        loading={isLoading}
-        disabled={isLoading}
+        loading={isLoading && !nonRootUser}
+        disabled={isLoading && !nonRootUser}
         loadingPosition="start"
         startIcon={<InstallDesktop />}
       >

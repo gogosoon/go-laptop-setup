@@ -157,7 +157,14 @@ async function installRequiredSoftware(event) {
 ipcMain.on("install", async (event, data) => {
 
   // Root user check
-  await checkPasswordRemovedForSudo(event);
+  const isRoot = await checkPasswordRemovedForSudo();
+
+  if (!isRoot) {
+    event.reply(`output`, `To continue, you should have root access...`, {
+      type: "rootUserCheck",
+    });
+    return;
+  }
 
   // Install required softwares
   await installRequiredSoftware(event);
@@ -262,16 +269,10 @@ app.on("activate", () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-async function checkPasswordRemovedForSudo(event, data) {
+async function checkPasswordRemovedForSudo() {
   const command = await executeAsyncCommand(`sudo -n true`);
 
-  if (command) {
-    console.log("Root User ======================== ");
-  } else {
-    event.reply(`output`, `To continue, you should have root access...`, {
-      type: "rootUserCheck",
-    });
-  }
+  return command;
 }
 
 async function executeAsyncCommand(command) {
