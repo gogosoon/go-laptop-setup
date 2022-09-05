@@ -133,6 +133,10 @@ async function installSoftware(software, event) {
 }
 
 ipcMain.on("installRequiredSoftwares", async (event, data) => {
+  
+});
+
+async function installRequiredSoftware(event) {
   const requiredSoftwares = [
     {
       id: "11-snapd",
@@ -147,11 +151,8 @@ ipcMain.on("installRequiredSoftwares", async (event, data) => {
     await installSoftware(requiredSoftwares[i], event);
   }
 
-  event.reply(`output`, `required softwares are installed`, {
-    type: "requiredSoftwaresInstalled",
-    status: true,
-  });
-});
+  event.reply(`output`, `Required softwares installed`, null);
+}
 
 ipcMain.on("install", async (event, data) => {
 
@@ -159,38 +160,39 @@ ipcMain.on("install", async (event, data) => {
   await checkPasswordRemovedForSudo(event);
 
   // Install required softwares
+  await installRequiredSoftware(event);
 
   // Install selected softwares
 
-  const idsOfSoftwaresToInstall = Object.keys(data?.install);
+  // const idsOfSoftwaresToInstall = Object.keys(data?.install);
 
-  const installSoftwaresInfo = getRequiredSoftwaresInfo(
-    idsOfSoftwaresToInstall,
-    softwares?.software_groups,
-    {}
-  );
+  // const installSoftwaresInfo = getRequiredSoftwaresInfo(
+  //   idsOfSoftwaresToInstall,
+  //   softwares?.software_groups,
+  //   {}
+  // );
 
-  try {
-    for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
-      await new Promise(async (resolve, reject) => {
-        await installSoftware(
-          installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
-          event
-        );
-        resolve("Done");
-      });
-    }
+  // try {
+  //   for (let i = 0; i < idsOfSoftwaresToInstall?.length; i++) {
+  //     await new Promise(async (resolve, reject) => {
+  //       await installSoftware(
+  //         installSoftwaresInfo[idsOfSoftwaresToInstall[i]],
+  //         event
+  //       );
+  //       resolve("Done");
+  //     });
+  //   }
 
-    event.reply(`output`, `All software installation completed`, {
-      type: "loading",
-      status: false,
-    });
-  } catch (error) {
-    event.reply(`output`, `Software installation failed`, {
-      type: "loading",
-      status: false,
-    });
-  }
+  //   event.reply(`output`, `All software installation completed`, {
+  //     type: "loading",
+  //     status: false,
+  //   });
+  // } catch (error) {
+  //   event.reply(`output`, `Software installation failed`, {
+  //     type: "loading",
+  //     status: false,
+  //   });
+  // }
 });
 
 if (isDev) {

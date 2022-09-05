@@ -271,13 +271,6 @@ function App() {
             setNonRootUser(true);
             break;
 
-          case `requiredSoftwaresInstalled`:
-            if (arg?.status) {
-              softwaresInstallation();
-            } else {
-            }
-            break;
-
           case `loading`:
             setLoadingMessage(message);
             if (arg?.status) {
