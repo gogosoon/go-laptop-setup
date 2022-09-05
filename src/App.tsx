@@ -251,7 +251,7 @@ function App() {
   }
 
   function installSoftwares() {
-    startListeners();
+    // startListeners();
     checkRootUser();
   }
 
@@ -263,7 +263,7 @@ function App() {
     }
   }
 
-  function startListeners() {
+  useEffect(() => {
     ipcRenderer.on("output", (event: any, message: any, arg: any) => {
       output += `${message}`;
       setConsoleOutput(output);
@@ -300,7 +300,16 @@ function App() {
         }
       }
     });
-  }
+
+
+    return () => {
+      ipcRenderer.removeListener("output", () => {
+        console.log("============================================================");
+        console.log("Listener removed");
+        console.log("============================================================");
+      })
+    }
+  }, []);
 
   function checkRootUser() {
     ipcRenderer.send("checkRootUser");
