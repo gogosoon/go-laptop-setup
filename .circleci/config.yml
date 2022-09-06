@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+  github-release: duffn/github-release@0.1
 jobs:
   build:
     working_directory: ~/repo

@@ -1,6 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import softwares from "./softwares.json";
 import {
+  ExpandLess,
+  InstallDesktop,
+  KeyboardArrowDown,
+} from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import {
+  AppBar,
+  Box,
   Button,
   Checkbox,
   Dialog,
@@ -14,19 +20,14 @@ import {
   Popover,
   TextField,
   Typography,
-  Toolbar,
-  Box,
-  AppBar,
+  Toolbar
 } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
 import "./App.css";
-import {
-  KeyboardArrowDown,
-  ExpandLess,
-  InstallDesktop,
-} from "@mui/icons-material";
 import { Banner } from "./components/Banner";
 import BoxLoader from "./components/BoxLoader";
+import React, { useEffect, useRef, useState } from "react";
+import "./App.css";
+import softwares from "./softwares.json";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
@@ -78,7 +79,7 @@ export const Software = (props: SoftwareProps) => {
 
   useEffect(() => {
     onChange(checked ? "ADD" : "REMOVE", software?.id, inputValues, null);
-  }, [checked, inputValues, software]);
+  }, [checked, inputValues, software]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
@@ -279,7 +280,7 @@ function App() {
               setIsLoading(false);
             }
             break;
-
+            
           default:
             break;
         }
