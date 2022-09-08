@@ -21,6 +21,6 @@ jobs:
      - name: Create Release
        uses: ncipollo/release-action@v1
        with: 
-          artifacts: "./out/make/*.deb"
+          artifacts: "./out/make/deb/x64*.deb"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ github.ref }}
