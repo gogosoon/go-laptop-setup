@@ -9,9 +9,9 @@
   "description": "Testing Build",
   "private": true,
   "dependencies": {
-    "@datapunt/matomo-tracker-react": "^0.5.1",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "@jonkoops/matomo-tracker-react": "^0.7.0",
     "@mui/icons-material": "^5.8.4",
     "@mui/lab": "^5.0.0-alpha.93",
     "@mui/material": "^5.8.6",
