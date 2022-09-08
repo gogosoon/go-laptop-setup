@@ -27,6 +27,7 @@ import { Banner } from "./components/Banner";
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import softwares from "./softwares.json";
+import { useMatomo } from "@datapunt/matomo-tracker-react";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
@@ -244,6 +245,7 @@ function App() {
   const [nonRootUser, setNonRootUser] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>("");
+  const { trackPageView, trackEvent } = useMatomo();
 
   function handleClose() {
     setNonRootUser(false);
@@ -286,6 +288,10 @@ function App() {
       }
     });
   }
+
+  useEffect(()=>{
+    trackPageView({});
+  },[])
 
   useEffect(() => {
     if (showConsoleOutput) {
