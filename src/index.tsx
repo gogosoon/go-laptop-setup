@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createInstance, MatomoProvider } from "@datapunt/matomo-tracker-react";
+import { createInstance, MatomoProvider } from "@jonkoops/matomo-tracker-react";
 import { Constants } from "./Constants/Constants";
 
 const instance = createInstance({

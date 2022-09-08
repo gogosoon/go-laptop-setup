@@ -27,7 +27,7 @@ import { Banner } from "./components/Banner";
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import softwares from "./softwares.json";
-import { useMatomo } from "@datapunt/matomo-tracker-react";
+import { useMatomo } from "@jonkoops/matomo-tracker-react";
 const { ipcRenderer } = window.require("electron");
 
 interface Input {
@@ -153,10 +153,9 @@ function RenderSoftware(props: RenderSoftwareProps) {
 
   useEffect(() => {
     setGroupChecked(
-      props?.checked === true && groupChecked === false ? true : false
-    );
-     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props?.checked]);
+      props?.checked === true && groupChecked === false ? true : false          
+    );           // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props?.checked]);    
 
   return (
     <>
@@ -245,7 +244,7 @@ function App() {
   const [nonRootUser, setNonRootUser] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingMessage, setLoadingMessage] = useState<string>("");
-  const { trackPageView, trackEvent } = useMatomo();
+  const { trackPageView } = useMatomo();
 
   function handleClose() {
     setNonRootUser(false);
@@ -290,8 +289,8 @@ function App() {
   }
 
   useEffect(()=>{
-    trackPageView({});
-  },[])
+    trackPageView(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[]);   
 
   useEffect(() => {
     if (showConsoleOutput) {
