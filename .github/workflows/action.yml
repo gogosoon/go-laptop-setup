@@ -28,6 +28,6 @@ jobs:
        uses: ncipollo/release-action@v1
        with: 
           allowUpdates: true
-          artifacts: "./out/make/deb/x64*.deb"
+          artifacts: "./out/make/deb/x64/*.deb"
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{steps.version.outputs.prop}} 
