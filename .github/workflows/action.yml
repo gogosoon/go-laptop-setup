@@ -2,6 +2,7 @@ name: Node.js CI
 on: 
   push:
     branches: [master]
+    tag: ${{ github.ref }}
 
 jobs:
   build:
@@ -9,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-     - uses: actions/labeler@v4
-       with:
-         repo-token: ${{ secrets.GITHUB_TOKEN }}
      - uses: actions/checkout@v3
      - name: Use Node.js
        uses: actions/setup-node@v3
@@ -22,7 +20,7 @@ jobs:
      - name: Make build
        run: yarn make
      - name: Create Release
-       uses: actions/create-release@v1
+       uses: ncipollo/release-action@v1
        with: 
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          artifacts: "./out/make/*.deb"
+          token: ${{ secrets.GITHUB_TOKEN }}
