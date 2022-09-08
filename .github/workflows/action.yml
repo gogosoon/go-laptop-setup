@@ -2,7 +2,8 @@ name: Node.js CI
 on: 
   push:
     branches: [master]
-    tag: ${{ github.ref }}
+    tag: 
+    - ${{ github.ref }}
 
 jobs:
   build:
