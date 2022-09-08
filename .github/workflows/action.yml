@@ -18,9 +18,13 @@ jobs:
        run: yarn
      - name: Make build
        run: yarn make
+     - name: Read package.json
+       uses: dutscher/read-package-json-endpoint-actions@v1.33.7
+       id: package-json-endpoint
      - name: Create Release
        uses: ncipollo/release-action@v1
        with: 
+          allowUpdates: true
           artifacts: "./out/make/deb/x64*.deb"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          tag: ${{ steps.package-json-endpoint.outputs.version }}
