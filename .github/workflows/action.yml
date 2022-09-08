@@ -18,10 +18,16 @@ jobs:
        run: yarn
      - name: Make build
        run: yarn make
+     - name: get version
+       id: version
+       uses: notiz-dev/github-action-json-property@release
+       with: 
+        path: 'package.json'
+        prop_path: 'version'
      - name: Create Release
        uses: ncipollo/release-action@v1
        with: 
           allowUpdates: true
           artifacts: "./out/make/deb/x64*.deb"
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ github.ref }}
+          tag: ${{steps.version.outputs.prop}} 
