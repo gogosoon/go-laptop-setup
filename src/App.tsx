@@ -20,11 +20,10 @@ import {
   Popover,
   TextField,
   Typography,
-  Toolbar
+  Toolbar,
 } from "@mui/material";
 import "./App.css";
 import { Banner } from "./components/Banner";
-import BoxLoader from "./components/BoxLoader";
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import softwares from "./softwares.json";
@@ -155,6 +154,7 @@ function RenderSoftware(props: RenderSoftwareProps) {
     setGroupChecked(
       props?.checked === true && groupChecked === false ? true : false
     );
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props?.checked]);
 
   return (
@@ -179,7 +179,6 @@ function RenderSoftware(props: RenderSoftwareProps) {
             }}
           />
 
-          
           {software?.softwares?.map((sub_software) => (
             <div key={sub_software?.id}>
               <RenderSoftware
@@ -280,7 +279,7 @@ function App() {
               setIsLoading(false);
             }
             break;
-            
+
           default:
             break;
         }
@@ -293,7 +292,6 @@ function App() {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [consoleOutput, showConsoleOutput]);
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -357,7 +355,6 @@ function App() {
                   [id]: newSoftware,
                 }));
                 break;
-
               }
               case "REMOVE": {
                 let allSoftwares = softwaresToInstall;
